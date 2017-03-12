@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src='bayes.js'></script>
+  </head>
+
+  <body>
+    <script>
+      classifier = new Bayes()
+      classifier.train("Un des langages dynamiques est Ruby, mais ce n'est pas le seul. Ruby est également non typé", 'ruby')
+      classifier.train("Ruby est trop cool", 'ruby')
+      classifier.train("J'ai une expérience en Ruby on Rails, mais aussi en JavaScript", 'ruby')
+      classifier.train("Vue.js est un framework JavaScript", 'javascript')
+
+      console.log(localStorage.getItem('tags'))
+      console.log(localStorage.getItem('wordsByTags'))
+      console.log(localStorage.getItem('textCountByTag'))
+    </script>
+  </body>
+</html>

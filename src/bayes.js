@@ -1,4 +1,4 @@
-class Bayes {
+export default class {
   train (text, tag) {
     // console.log(text)
     // console.log(tag)
@@ -13,8 +13,6 @@ class Bayes {
     }
 
     this.storeTextCountByTag(tag)
-
-    // localStorage.clear()
   }
 
   storedTags () {
@@ -49,6 +47,10 @@ class Bayes {
     }
   }
 
+  storedTextCountByTag () {
+    return parseInt(localStorage.getItem('textCountByTag'))
+  }
+
   storeWordByTag (word, tag) {
     let wordsByTags = this.storedWordsByTags()
 
@@ -71,10 +73,6 @@ class Bayes {
     localStorage.setItem('wordsByTags', JSON.stringify(wordsByTags))
   }
 
-  storedTextCountByTag () {
-    return parseInt(localStorage.getItem('textCountByTag'))
-  }
-
   storeTextCountByTag (tag) {
     let textCountByTag = this.storedTextCountByTag()
 
@@ -87,5 +85,15 @@ class Bayes {
 
   tokenize (text) {
     return text.toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' ')
+  }
+
+  resetTrainning () {
+    console.log('2')
+    localStorage.clear()
+    // localStorage.removeItem('tags')
+    // localStorage.removeItem('wordsByTags')
+    // localStorage.removeItem('textCountByTag')
+
+    console.log(localStorage.getItem('tags'))
   }
 }

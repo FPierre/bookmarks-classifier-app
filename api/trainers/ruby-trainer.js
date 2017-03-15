@@ -1,4 +1,4 @@
-export const rubyTrainer = [
+module.exports = [
   { tag: 'ruby', text: 'Please, Ruby devs, join() your paths' },
   { tag: 'ruby', text: 'Augmenting A Ruby on Rails App with Vue.js' },
   { tag: 'ruby', text: 'Rails isn’t trendy anymore. Hooray for Rails! | Ruby Fleebie' },

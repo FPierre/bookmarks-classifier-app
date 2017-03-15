@@ -1,4 +1,4 @@
-export const javaScriptTrainer = [
+module.exports = [
   { tag: 'javascript', text: 'Chart.js | Open source HTML5 Charts for your website' },
   { tag: 'javascript', text: 'Getting Started with Webpack: Module Bundling Magic' },
   { tag: 'javascript', text: 'Intro to Webpack' },

@@ -8,8 +8,8 @@ export default Bubble.extend({
         {
           label: 'a',
           data: [
-            { x: 20, y: 30, r: 45 },
-            { x: 20, y: 10, r: 50 }
+            { x: 10, y: 30, r: 10 },
+            { x: 20, y: 10, r: 30 }
           ],
           backgroundColor: '#ff6384',
           hoverBackgroundColor: '#ff6384'

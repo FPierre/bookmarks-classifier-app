@@ -1,42 +1,62 @@
 <template>
   <div id='app'>
-    <h1>Bookmarks classifier</h1>
-    <h2>Naive Bayes classifier</h2>
+    <div class='container'>
+      <h1>Bookmarks classifier</h1>
+      <h2>Naive Bayes classifier</h2>
 
-    <h3>Test a classification</h3>
+      <h3>Test a classification</h3>
 
-    <input type='text' placeholder='bookmark title' v-model='title' @keyup.enter='guess' autofocus>
-    <br>
-    <button @click='guess'>CLASSIFY</button>
-    <div v-if='winner'>{{ winnerSentence }}</div>
+      <input type='text' placeholder='bookmark title' v-model='title' @keyup.enter='guess' autofocus>
+      <br>
+      <button class='btn' @click='guess'>CLASSIFY</button>
+      <div v-if='winner'>{{ winnerSentence }}</div>
 
-    <!-- <commit-chart></commit-chart> -->
+      <h3>How it's works?</h3>
 
-    <h3>How it's works?</h3>
+      <nav class='nav'>
+        <button class='tab' @click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }'>Simple</button>
+        <button class='tab' @click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }'>Full</button>
+      </nav>
+   
+      <template v-if='currentTab == "simpleMode"'>
+        <p>
+          <a href='https://en.wikipedia.org/wiki/Naive_Bayes_classifier'>Naive Bayes classifier</a> is a simple
+          This project is heavely inspired by this illuminating article.
+        </p>
+      </template>
+      <template v-else>
+        <h3>Words distribution</h3>
 
-    <p><a href='https://en.wikipedia.org/wiki/Naive_Bayes_classifier'>Naive Bayes classifier</a> is a simple
-    This project is heavely inspired by this illuminating article.</p>
+       <texts-by-tag-chart :height='100' :texts-by-tag='bayes.textCountByTag'></texts-by-tag-chart>
+        <!-- <tags-chart :height='100' :tags='bayes.wordsByTags'></tags-chart> -->
+        <!-- <commit-chart :height='100'></commit-chart> -->
+ 
+        <pre>{{ bayes.wordsByTags }}</pre>
+        <pre>{{ bayes.tags }}</pre>
+        <pre>{{ bayes.textCountByTag }}</pre>
+        <pre>{{ bayes.wordsCount }}</pre>
 
-    <!-- {{ bayes.wordsByTags }} -->
-    <!-- {{ bayes.tags }}
-    {{ bayes.textCountByTag }}
-    {{ bayes.wordsCount }} -->
-
+        <h3>Why an API is needed?</h3>
+      </template>
+    </div>    
   </div>
 </template>
-<script>
 
+<script>
+import TextsByTagChart from './components/TextsByTagChart'
+// import TagsChart from './components/TagsChart'
 import CommitChart from './components/TestBar'
-import Trainers from './assets/trainers/trainers'
-import Bayes from './bayes'
+import Bayes from './Bayes'
 
 export default {
   name: 'app',
   data () {
     return {
+      currentTab: 'simpleMode',
       title: null,
       bayes: new Bayes(),
-      winner: null
+      winner: null,
+      trainers: []
     }
   },
   computed: {
@@ -45,18 +65,22 @@ export default {
     }
   },
   created () {
-    // console.log(Trainers)
-
-    this.train()
+    const trainersResource = this.$resource('http://localhost:3003/trainers{/id}')
+    trainersResource.get().then(response => {
+      this.trainers = response.body.trainers
+      this.train()
+    })
   },
   components: {
+    TextsByTagChart,
+    // TagsChart,
     CommitChart
   },
   methods: {
     train () {
-      for (let i = 0; i < Trainers.length; i++) {
-        const tag = Trainers[i]['tag']
-        const text = Trainers[i]['text']
+      for (let i = 0; i < this.trainers.length; i++) {
+        const tag = this.trainers[i]['tag']
+        const text = this.trainers[i]['text']
 
         this.bayes.train(text, tag)
       }
@@ -79,7 +103,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #35495e;
-  margin-top: 60px;
+  margin-top: 4em;
+}
+
+.container {
+  width: 50%;
+  margin: 0 auto;
 }
 
 h1 {
@@ -88,6 +117,10 @@ h1 {
   font-size: 3.2em;
   color: #2c3e50;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+}
+
+h3 {
+  margin: 4.5em 0 2em;
 }
 
 input[type=text] {
@@ -106,19 +139,36 @@ input[type=text]:focus {
 }
 
 button {
-  display: inline-block;
-  margin: 1em 0;
-  padding: 0.75em 2em;
   font-size: 1.05em;
   font-weight: 600;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
-  letter-spacing: 0.1em;
+  letter-spacing: .1em;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.btn {
+  margin: 1em 0;
+  padding: 0.75em 2em;
   color: #fff;
   background-color: #4fc08d;
   border: 1px solid #4fc08d;
   border-radius: 2em;
-  box-sizing: border-box;
-  transition: all 0.15s ease;
-  outline: none;
+}
+
+.nav {
+  margin: 2em 0;
+}
+
+.tab {
+  margin: .5em;
+  padding: .4em;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #fff;
+}
+
+.tab.active {
+  border-bottom-color: #4fc08d;
 }
 </style>

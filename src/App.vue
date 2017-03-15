@@ -11,34 +11,35 @@
       <button class='btn' @click='guess'>CLASSIFY</button>
       <div v-if='winner'>{{ winnerSentence }}</div>
 
-      <h3>How it's works?</h3>
-
       <nav class='nav'>
         <button class='tab' @click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }'>Simple</button>
         <button class='tab' @click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }'>Full</button>
       </nav>
-   
+
       <template v-if='currentTab == "simpleMode"'>
-        <p>
-          <a href='https://en.wikipedia.org/wiki/Naive_Bayes_classifier'>Naive Bayes classifier</a> is a simple
-          This project is heavely inspired by this illuminating article.
-        </p>
       </template>
       <template v-else>
         <h3>Words distribution</h3>
 
-       <texts-by-tag-chart :height='100' :texts-by-tag='bayes.textCountByTag'></texts-by-tag-chart>
+        <texts-by-tag-chart :height='80' :texts-by-tag='bayes.textCountByTag'></texts-by-tag-chart>
         <!-- <tags-chart :height='100' :tags='bayes.wordsByTags'></tags-chart> -->
         <!-- <commit-chart :height='100'></commit-chart> -->
- 
+
         <pre>{{ bayes.wordsByTags }}</pre>
         <pre>{{ bayes.tags }}</pre>
         <pre>{{ bayes.textCountByTag }}</pre>
         <pre>{{ bayes.wordsCount }}</pre>
-
-        <h3>Why an API is needed?</h3>
       </template>
-    </div>    
+    </div>
+
+    <div class='explanations'>
+      <div class='container-fluid'>
+        <div class='container'>
+          <h3>How it's works?</h3>
+          <h3>Why an API is needed?</h3>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,6 +112,10 @@ export default {
   margin: 0 auto;
 }
 
+.container-fluid {
+  width: 100%;
+}
+
 h1 {
   margin: 0;
   font-weight: 300;
@@ -120,7 +125,7 @@ h1 {
 }
 
 h3 {
-  margin: 4.5em 0 2em;
+
 }
 
 input[type=text] {
@@ -161,14 +166,20 @@ button {
 }
 
 .tab {
-  margin: .5em;
-  padding: .4em;
+  margin: .5em 1em;
+  padding: 0 0 .3em;
   background: none;
   border: none;
-  border-bottom: 1px solid #fff;
+  border-bottom: 3px solid #fff;
 }
 
 .tab.active {
   border-bottom-color: #4fc08d;
+}
+
+.explanations {
+  padding: 45px 40px;
+  color: #999;
+  background-color: #f6f6f6;
 }
 </style>

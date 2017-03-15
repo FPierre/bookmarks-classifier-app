@@ -8,9 +8,10 @@
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "api": "node api/index.js"  
+    "api": "node api/index.js"
   },
   "dependencies": {
+    "pug": "^2.0.0-beta11",
     "vue": "^2.2.2",
     "vue-chartjs": "^2.5.1",
     "vue-resource": "^1.2.1"

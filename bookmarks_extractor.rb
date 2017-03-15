@@ -8,7 +8,7 @@ bookmarks = Nokogiri::HTML File.open('raindrop.io.html')
 
 tagged_bookmarks = {}
 
-TAGS = ['Ruby', 'JavaScript']
+TAGS = %w(Ruby JavaScript).freeze
 
 # ap bookmarks.css("a[tags='Ruby on Rails,Database,Web development,Back-end,Development']").first.attributes['tags'].value.split(',')
 

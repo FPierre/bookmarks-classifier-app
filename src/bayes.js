@@ -90,7 +90,6 @@ export default class {
       scores[tag] = 1 / (1 + Math.exp(logSum))
     }
 
-    // return scores
     this.scores = scores
   }
 
@@ -195,7 +194,7 @@ export default class {
     return { tag: bestLabel, score: bestScore }
   }
 
-  resetTrainning () {
+  resetTraining () {
     this.tags = []
     this.wordsByTags = {}
     this.textCountByTag = {}

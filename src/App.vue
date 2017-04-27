@@ -21,10 +21,6 @@
       <template v-else>
         <h3>Words distribution</h3>
 
-        <texts-by-tag-chart :height='80' :texts-by-tag='bayes.textCountByTag'></texts-by-tag-chart>
-        <!-- <tags-chart :height='100' :tags='bayes.wordsByTags'></tags-chart> -->
-        <!-- <commit-chart :height='100'></commit-chart> -->
-
         <pre>{{ bayes.wordsByTags }}</pre>
         <pre>{{ bayes.tags }}</pre>
         <pre>{{ bayes.textCountByTag }}</pre>
@@ -44,9 +40,6 @@
 </template>
 
 <script>
-import TextsByTagChart from './components/TextsByTagChart'
-// import TagsChart from './components/TagsChart'
-import CommitChart from './components/TestBar'
 import Bayes from './Bayes'
 
 export default {
@@ -71,11 +64,6 @@ export default {
       this.trainers = response.body.trainers
       this.train()
     })
-  },
-  components: {
-    TextsByTagChart,
-    // TagsChart,
-    CommitChart
   },
   methods: {
     train () {

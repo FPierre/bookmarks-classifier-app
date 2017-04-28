@@ -1,12 +1,11 @@
-var express = require('express')
-var app = express()
+const ap = require('express').express()
 
-var rubyTrainer = require('./trainers/ruby-trainer')
-var javaScriptTrainer = require('./trainers/javascript-trainer')
+const rubyTrainer = require('./trainers/ruby-trainer')
+const javaScriptTrainer = require('./trainers/javascript-trainer')
 
-var trainers = rubyTrainer.concat(javaScriptTrainer)
+const trainers = rubyTrainer.concat(javaScriptTrainer)
 
-app.get('/trainers', function (req, res) {
+app.get('/trainers', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')

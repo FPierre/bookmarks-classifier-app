@@ -11,6 +11,7 @@
     "api": "node api/index.js"
   },
   "dependencies": {
+    "stopwords-json": "^1.2.0",
     "vue": "^2.3.0",
     "vue-resource": "^1.2.1"
   },

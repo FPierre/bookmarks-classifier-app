@@ -19,9 +19,6 @@ for (let trainer of sanitizeTrainers) {
 //   bayes.resetTraining()
 // }
 
-bayes.guess('Vive le Javascript')
-console.log(bayes.winner())
-
 app.get('/guess', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')

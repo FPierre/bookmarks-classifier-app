@@ -70,7 +70,7 @@ class Bayes {
           // console.log('wordProbability: ', wordProbability)
 
           const wordInverseProbability = this.wordInverseTagCount(word, tag) / textsInverseCount[tag]
-          console.log(': ', this.wordInverseTagCount(word, tag))
+          // console.log(': ', this.wordInverseTagCount(word, tag))
           // console.log('wordInverseProbability: ', wordInverseProbability)
 
           wordicity = wordProbability / (wordProbability + wordInverseProbability)
@@ -84,7 +84,7 @@ class Bayes {
         }
 
         logSum += (Math.log(1 - wordicity) - Math.log(wordicity))
-        console.log(`${tag}icity of ${word}: ${wordicity}`)
+        // console.log(`${tag}icity of ${word}: ${wordicity}`)
       }
 
       scores[tag] = 1 / (1 + Math.exp(logSum))

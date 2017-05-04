@@ -7,55 +7,27 @@
     input(type='text' placeholder='bookmark title' v-model='title' @keyup.enter='guess' autofocus)
     br
     button.btn(@click='guess') CLASSIFY
-    div(v-if='winner') {{ winnerSentence }}
+    div(v-if='winner')
     //- nav.nav
     //-   button.tab(@click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }') Simple
     //-   button.tab(@click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }') Full
 </template>
 
 <script>
-import Bayes from './Bayes'
-
 export default {
   name: 'app',
   data () {
     return {
-      currentTab: 'simpleMode',
-      title: null,
-      bayes: new Bayes(),
-      winner: null,
-      trainers: []
-    }
-  },
-  computed: {
-    winnerSentence () {
-      return `This title probably deals with ${this.winner['tag']} (${this.winner['score']})`
+      title: null
     }
   },
   created () {
-    const trainersResource = this.$resource('http://localhost:3003/trainers{/id}')
-
-    trainersResource.get().then(response => {
-      this.trainers = response.body.trainers
-      this.train()
-    })
-  },
-  methods: {
-    train () {
-      for (let i = 0; i < this.trainers.length; i++) {
-        const tag = this.trainers[i]['tag']
-        const text = this.trainers[i]['text']
-
-        this.bayes.train(text, tag)
-      }
-    },
-    guess () {
-      this.bayes.guess(this.title)
-      this.winner = this.bayes.winner()
-    },
-    resetTraining () {
-      this.bayes.resetTraining()
-    }
+    // const trainersResource = this.$resource('http://localhost:3003/solve{/text}')
+    //
+    // trainersResource.get().then(response => {
+    //   this.trainers = response.body.trainers
+    //   this.train()
+    // })
   }
 }
 </script>

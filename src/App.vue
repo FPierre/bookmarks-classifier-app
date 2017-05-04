@@ -1,42 +1,16 @@
-<template>
-  <div id='app'>
-    <div class='container'>
-      <h1>Bookmarks classifier</h1>
-      <h2>Naive Bayes classifier</h2>
+<template lang='pug'>
+#app
+  .container
+    h1 Bookmarks classifier
+    h2 Naive Bayes classifier
 
-      <h3>Test a classification</h3>
-
-      <input type='text' placeholder='bookmark title' v-model='title' @keyup.enter='guess' autofocus>
-      <br>
-      <button class='btn' @click='guess'>CLASSIFY</button>
-      <div v-if='winner'>{{ winnerSentence }}</div>
-
-      <nav class='nav'>
-        <button class='tab' @click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }'>Simple</button>
-        <button class='tab' @click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }'>Full</button>
-      </nav>
-
-      <template v-if='currentTab == "simpleMode"'>
-      </template>
-      <template v-else>
-        <h3>Words distribution</h3>
-
-        <pre>{{ bayes.wordsByTags }}</pre>
-        <pre>{{ bayes.tags }}</pre>
-        <pre>{{ bayes.textCountByTag }}</pre>
-        <pre>{{ bayes.wordsCount }}</pre>
-      </template>
-    </div>
-
-    <div class='explanations'>
-      <div class='container-fluid'>
-        <div class='container'>
-          <h3>How it's works?</h3>
-          <h3>Why an API is needed?</h3>
-        </div>
-      </div>
-    </div>
-  </div>
+    input(type='text' placeholder='bookmark title' v-model='title' @keyup.enter='guess' autofocus)
+    br
+    button.btn(@click='guess') CLASSIFY
+    div(v-if='winner') {{ winnerSentence }}
+    //- nav.nav
+    //-   button.tab(@click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }') Simple
+    //-   button.tab(@click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }') Full
 </template>
 
 <script>
@@ -60,6 +34,7 @@ export default {
   },
   created () {
     const trainersResource = this.$resource('http://localhost:3003/trainers{/id}')
+
     trainersResource.get().then(response => {
       this.trainers = response.body.trainers
       this.train()
@@ -112,10 +87,6 @@ h1 {
   font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
 }
 
-h3 {
-
-}
-
 input[type=text] {
   padding: 0 15px;
   height: 30px;
@@ -163,11 +134,5 @@ button {
 
 .tab.active {
   border-bottom-color: #4fc08d;
-}
-
-.explanations {
-  padding: 45px 40px;
-  color: #999;
-  background-color: #f6f6f6;
 }
 </style>

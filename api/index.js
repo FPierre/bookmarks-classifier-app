@@ -8,38 +8,28 @@ const app = express()
 
 const rubyTrainer = require('./trainers/ruby-trainer')
 const javaScriptTrainer = require('./trainers/javascript-trainer')
-
 const trainers = rubyTrainer.concat(javaScriptTrainer)
-
-// sanitizeTitles(trainers)
 
 app.get('/trainers', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-
-  res.json({ trainers: sanitizeTitles(trainers) })
+  res.json({ trainers: sanitizeTexts(trainers) })
 })
 
 app.listen(3003)
 
-function sanitizeTitles (trainers) {
-  for (let i = 0; i <= trainers.length; i++) {
-    const trainer = trainers[i]
+function sanitizeTexts (trainers) {
+  return trainers.map((trainer) => {
+    trainer.text = removeStopWords(trainer.text, stopWords[trainer.lang])
 
-    if (trainer === undefined) {
-      continue
-    }
-
-    const stopWordsByLang = stopWords['en']
-
-    removeStopWords(trainer['text'], stopWordsByLang)
-  }
+    return trainer
+  })
 }
 
-function removeStopWords (title, stopWordsByLang) {
+function removeStopWords (text, stopWordsByLang) {
   // Split all the individual words in the phrase
-  const words = title.match(/[^\s]+|\s+[^\s+]$/g)
+  const words = text.match(/[^\s]+|\s+[^\s+]$/g)
 
   for (let x = 0; x < words.length; x++) {
     for (let y = 0; y < stopWordsByLang.length; y++) {
@@ -57,10 +47,10 @@ function removeStopWords (title, stopWordsByLang) {
         regex = new RegExp(regexStr, 'ig')
 
         // Remove the word from the keywords
-        title = title.replace(regex, ' ')
+        text = text.replace(regex, ' ')
       }
     }
   }
 
-  return title.replace(/^\s+|\s+$/g, '')
+  return text.replace(/^\s+|\s+$/g, '')
 }

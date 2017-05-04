@@ -1,5 +1,4 @@
 const express = require('express')
-const stopWords = require('stopwords-json')
 
 const { sanitizeTexts } = require('./utils')
 

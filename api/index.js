@@ -1,9 +1,13 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const { sanitizeTexts } = require('./utils')
 const bayes = require('./bayes')
 
 const app = express()
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 const rubyTrainer = require('./trainers/ruby-trainer')
 const javaScriptTrainer = require('./trainers/javascript-trainer')
@@ -15,16 +19,12 @@ for (let trainer of sanitizeTrainers) {
   bayes.train(trainer.tag, trainer.text)
 }
 
-// function resetTraining () {
-//   bayes.resetTraining()
-// }
-
-app.get('/guess', (req, res) => {
+app.post('/guess', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET')
+  res.setHeader('Access-Control-Allow-Methods', 'POST')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
-  // bayes.guess(req.text)
+  bayes.guess(req.body.text)
 
   res.json({ winner: bayes.winner() })
 })

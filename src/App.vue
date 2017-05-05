@@ -31,7 +31,11 @@ export default {
   },
   methods: {
     guess () {
-
+      this.$http.post('http://localhost:3003/guess', { text: this.text }).then(response => {
+        console.log(response)
+      }, response => {
+        console.log(response.status)
+      })
     }
   }
 }

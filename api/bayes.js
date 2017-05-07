@@ -1,7 +1,7 @@
 class Bayes {
   constructor () {
     this.tags = []
-    this.wordsByTags = {}
+    this.wordsByTag = {}
     this.textCountByTag = {}
     this.wordsCount = {}
     this.scores = {}
@@ -63,10 +63,10 @@ class Bayes {
         if (_stemTotalCount === 0) {
           continue
         } else {
-          let tmp = this.wordsByTags[tag][word] || 0
+          let tmp = this.wordsByTag[tag][word] || 0
           const wordProbability = tmp / textsCount[tag]
           // console.log('tmp: ', tmp)
-          // console.log(this.wordsByTags[tag][word])
+          // console.log(this.wordsByTag[tag][word])
           // console.log('wordProbability: ', wordProbability)
 
           const wordInverseProbability = this.wordInverseTagCount(word, tag) / textsInverseCount[tag]
@@ -105,25 +105,25 @@ class Bayes {
 
   // Number of times a word was seen for a given tag
   storeWordByTag (word, tag) {
-    let wordsByTags = this.wordsByTags
+    let wordsByTag = this.wordsByTag
 
-    if (!wordsByTags) {
-      wordsByTags = {}
+    if (!wordsByTag) {
+      wordsByTag = {}
     }
 
-    if (!wordsByTags[tag]) {
-      wordsByTags[tag] = {}
+    if (!wordsByTag[tag]) {
+      wordsByTag[tag] = {}
     }
 
-    if (!wordsByTags[tag][word]) {
-      wordsByTags[tag][word] = 0
+    if (!wordsByTag[tag][word]) {
+      wordsByTag[tag][word] = 0
     }
 
-    let count = wordsByTags[tag][word]
+    let count = wordsByTag[tag][word]
 
-    wordsByTags[tag][word] = ++count
+    wordsByTag[tag][word] = ++count
 
-    this.wordsByTags = wordsByTags
+    this.wordsByTag = wordsByTag
   }
 
   storeTextCountByTag (tag) {
@@ -164,7 +164,7 @@ class Bayes {
         continue
       }
 
-      let tmp = this.wordsByTags[tags[i]][word] || 0
+      let tmp = this.wordsByTag[tags[i]][word] || 0
 
       total += tmp
     }
@@ -196,7 +196,7 @@ class Bayes {
 
   resetTraining () {
     this.tags = []
-    this.wordsByTags = {}
+    this.wordsByTag = {}
     this.textCountByTag = {}
   }
 }

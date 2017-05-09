@@ -7,7 +7,7 @@
     input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
     br
     button.btn(@click='guess') CLASSIFY
-    //- div(v-if='winner')
+    div(v-if='scores') {{ scores | json }}
     //- nav.nav
     //-   button.tab(@click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }') Simple
     //-   button.tab(@click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }') Full
@@ -18,7 +18,8 @@ export default {
   name: 'app',
   data () {
     return {
-      text: null
+      text: null,
+      scores: []
     }
   },
   created () {
@@ -32,7 +33,7 @@ export default {
   methods: {
     guess () {
       this.$http.post('http://localhost:3003/guess', { text: this.text }).then(response => {
-        console.log(response)
+        this.scores = JSON.parse(response.bodyText)
       }, response => {
         console.log(response.status)
       })

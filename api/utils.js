@@ -8,6 +8,8 @@ exports.sanitizeTexts = trainers => {
   })
 }
 
+// TODO: remove integer from words
+// FIXME: isn't is tokenized in ['isn', 't']
 function removeStopWords (text, stopWordsByLang) {
   // Split all the individual words in the phrase
   const words = text.match(/[^\s]+|\s+[^\s+]$/g)

@@ -94,13 +94,14 @@ h1 {
 }
 
 input[type=text] {
-  border-radius: 20px;
+  border-radius: 25px;
   border: 1px solid #e3e3e3;
   color: #2c3e50;
-  font-size: .9rem;
+  font-size: 1rem;
   outline: none;
-  padding: 12px 18px;
+  padding: 13px 18px;
   transition: border-color 0.2s ease;
+  width: 300px;
 }
 
 input[type=text]:focus {

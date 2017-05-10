@@ -33,7 +33,7 @@ export default {
           {
             label: 'Probabilities per labels',
             backgroundColor: '#4fc08d',
-            data: Object.values(this.scores)
+            data: Object.values(this.scores).map(score => { return score * 100 })
           }
         ]
       }

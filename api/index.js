@@ -29,7 +29,7 @@ app.post('/guess', (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'POST')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   console.log(bayes.guess(req.body.text))
-  res.json({ winner: bayes.guess(req.body.text) })
+  res.json({ scores: bayes.guess(req.body.text) })
 })
 
 // app.get('/trainers', (req, res) => {

@@ -7,19 +7,36 @@
     input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
     br
     button.btn(@click='guess') CLASSIFY
-    div(v-if='scores') {{ scores | json }}
+
+    label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
     //- nav.nav
     //-   button.tab(@click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }') Simple
     //-   button.tab(@click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }') Full
 </template>
 
 <script>
+import LabelProbabilityBar from './components/LabelProbabilityBar'
+
 export default {
   name: 'app',
   data () {
     return {
-      text: null,
-      scores: []
+      text: 'Javascript est un bon langage',
+      scores: {}
+    }
+  },
+  computed: {
+    test () {
+      return {
+        labels: Object.keys(this.scores),
+        datasets: [
+          {
+            label: 'Probabilities per labels',
+            backgroundColor: '#4fc08d',
+            data: Object.values(this.scores)
+          }
+        ]
+      }
     }
   },
   created () {
@@ -33,11 +50,14 @@ export default {
   methods: {
     guess () {
       this.$http.post('http://localhost:3003/guess', { text: this.text }).then(response => {
-        this.scores = JSON.parse(response.bodyText)
+        this.scores = JSON.parse(response.bodyText)['scores']
       }, response => {
         console.log(response.status)
       })
     }
+  },
+  components: {
+    LabelProbabilityBar
   }
 }
 </script>
@@ -120,5 +140,9 @@ button {
 
 .tab.active {
   border-bottom-color: #4fc08d;
+}
+
+#bar-chart {
+  height: 200px;
 }
 </style>

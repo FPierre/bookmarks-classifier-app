@@ -4,3 +4,4 @@ dist/
 npm-debug.log
 yarn-error.log
 raindrop.io.html
+api/extractor/tagged-bookmarks.json

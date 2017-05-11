@@ -1,5 +1,6 @@
 const fs = require('fs')
 const cheerio = require('cheerio')
+const franc = require('franc-min')
 
 const tags = ['Ruby', 'JavaScript', 'Performance', 'Linux']
 const taggedBookmarks = {}
@@ -25,7 +26,7 @@ try {
 
           taggedBookmarks[r].push({
             tag: r,
-            lang: 'en',
+            lang: franc($(elem).text()),
             text: $(elem).text()
           })
         }
@@ -36,6 +37,10 @@ try {
   console.log('Error:', e.stack)
 }
 
-console.log(taggedBookmarks)
+fs.writeFile('api/extractor/tagged-bookmarks.json', JSON.stringify(taggedBookmarks, undefined, 2), (err) => {
+  if (err) {
+   return console.log(err)
+  }
 
-// File.write('tagged_bookmarks_titles.json', tagged_bookmarks.to_json)
+  console.log('The file was saved!')
+})

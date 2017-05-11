@@ -2,7 +2,7 @@ const fs = require('fs')
 const cheerio = require('cheerio')
 const franc = require('franc-min')
 
-const tags = ['Ruby', 'JavaScript', 'Performance', 'Linux']
+const tags = ['ES6', 'JavaScript']
 const taggedBookmarks = {}
 
 try {
@@ -10,24 +10,24 @@ try {
   const $ = cheerio.load(content)
 
   $('dt a').each((i, elem) => {
-    const t = $(elem).attr('tags')
+    const bookmarkTags = $(elem).attr('tags')
 
-    if (t) {
-      const s = t.split(',')
-      // console.log(s)
+    if (bookmarkTags) {
+      const bookmarkTagsArray = bookmarkTags.split(',')
 
-      for (const r of s) {
-        if (tags.includes(r)) {
-          console.log(r)
-
-          if (!taggedBookmarks[r]) {
-            taggedBookmarks[r] = []
+      for (bookmarkTag of bookmarkTagsArray) {
+        if (tags.includes(bookmarkTag)) {
+          if (!taggedBookmarks[bookmarkTag]) {
+            taggedBookmarks[bookmarkTag] = []
           }
 
-          taggedBookmarks[r].push({
-            tag: r,
-            lang: franc($(elem).text()),
-            text: $(elem).text()
+          const text = $(elem).text()
+          const lang = franc(text) === 'fra' ? 'fra' : 'eng'
+
+          taggedBookmarks[bookmarkTag].push({
+            tag: bookmarkTag,
+            lang: lang,
+            text: text
           })
         }
       }

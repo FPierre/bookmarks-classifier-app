@@ -6,7 +6,8 @@
 
     nav.nav
       button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
-      button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": !isGuessTab }') Supervision
+      button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
+      button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
 
     template(v-if='isGuessTab')
       input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
@@ -14,7 +15,12 @@
       button.btn(@click='guess') CLASSIFY
 
       label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
-    template(v-else)
+
+    template(v-else-if='isPendingTab')
+      | pendingTab
+      | {{ pendingTexts | json }}
+
+    template(v-else-if='isSupervisionTab')
       | supervisionTab
 </template>
 
@@ -26,6 +32,7 @@ export default {
   data () {
     return {
       currentTab: 'guessTab',
+      pendingTexts: {},
       text: 'Javascript est un bon langage',
       scores: {}
     }
@@ -33,6 +40,12 @@ export default {
   computed: {
     isGuessTab () {
       return this.currentTab === 'guessTab'
+    },
+    isPendingTab () {
+      return this.currentTab === 'pendingTab'
+    },
+    isSupervisionTab () {
+      return this.currentTab === 'supervisionTab'
     },
     test () {
       return {
@@ -49,7 +62,7 @@ export default {
   },
   created () {
     this.$http.get('http://localhost:3003/pending').then(response => {
-      console.log(response.body)
+      this.pendingTexts = response.body.texts
     }, response => {
       // error callback
     })
@@ -78,13 +91,15 @@ export default {
 
 <style>
 body {
+  /*color: #35495e;*/
+  color: #2c3e50;
   font-size: 14px;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
 }
 
 #app {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  color: #35495e;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   margin-top: 4em;
   text-align: center;
@@ -100,8 +115,6 @@ body {
 }
 
 h1 {
-  color: #2c3e50;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
   font-size: 3.2em;
   font-weight: 300;
   margin: 0;
@@ -110,7 +123,6 @@ h1 {
 input[type=text] {
   border-radius: 25px;
   border: 1px solid #e3e3e3;
-  color: #2c3e50;
   font-size: 1rem;
   outline: none;
   padding: 13px 18px;
@@ -124,7 +136,6 @@ input[type=text]:focus {
 
 button {
   cursor: pointer;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
   font-size: 1.05em;
   font-weight: 600;
   letter-spacing: .1em;
@@ -142,13 +153,13 @@ button {
 }
 
 .nav {
-  margin: 2em 0;
+  margin: 5em 0;
 }
 
 .tab {
   background: none;
-  border-bottom: 3px solid #fff;
   border: none;
+  border-bottom: 3px solid #fff;
   margin: .5em 1em;
   padding: 0 0 .3em;
 }

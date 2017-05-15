@@ -17,8 +17,9 @@
       label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
 
     template(v-else-if='isPendingTab')
-      | pendingTab
-      | {{ pendingTexts | json }}
+      .pending-text(v-for='text in pendingTexts')
+        span.pending-text-title {{ text.text }}
+        span.pending-text-tag {{ text.tag }}
 
     template(v-else-if='isSupervisionTab')
       | supervisionTab
@@ -92,6 +93,7 @@ export default {
 <style>
 body {
   /*color: #35495e;*/
+  background-color: #eee;
   color: #2c3e50;
   font-size: 14px;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
@@ -159,7 +161,7 @@ button {
 .tab {
   background: none;
   border: none;
-  border-bottom: 3px solid #fff;
+  border-bottom: 3px solid transparent;
   margin: .5em 1em;
   padding: 0 0 .3em;
 }
@@ -170,5 +172,22 @@ button {
 
 #bar-chart {
   height: 200px;
+}
+
+.pending-text {
+  background-color: #fff;
+  border-radius: .2rem;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  padding: 1.4rem 0;
+  margin: .3rem 0;
+}
+
+.pending-text-title {
+  display: block;
+  font-weight: bold;
+}
+
+.pending-text-tag {
+  display: block;
 }
 </style>

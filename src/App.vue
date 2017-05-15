@@ -4,14 +4,18 @@
     h1 Bookmarks classifier
     h2 Naive Bayes classifier
 
-    input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
-    br
-    button.btn(@click='guess') CLASSIFY
+    nav.nav
+      button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
+      button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": !isGuessTab }') Supervision
 
-    label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
-    //- nav.nav
-    //-   button.tab(@click='currentTab = "simpleMode"' :class='{ "active": currentTab == "simpleMode" }') Simple
-    //-   button.tab(@click='currentTab = "fullMode"' :class='{ "active": currentTab == "fullMode" }') Full
+    template(v-if='isGuessTab')
+      input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
+      br
+      button.btn(@click='guess') CLASSIFY
+
+      label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
+    template(v-else)
+      | supervisionTab
 </template>
 
 <script>
@@ -21,11 +25,15 @@ export default {
   name: 'app',
   data () {
     return {
+      currentTab: 'guessTab',
       text: 'Javascript est un bon langage',
       scores: {}
     }
   },
   computed: {
+    isGuessTab () {
+      return this.currentTab === 'guessTab'
+    },
     test () {
       return {
         labels: Object.keys(this.scores),

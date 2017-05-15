@@ -48,6 +48,12 @@ export default {
     }
   },
   created () {
+    this.$http.get('http://localhost:3003/pending').then(response => {
+      console.log(response.body)
+    }, response => {
+      // error callback
+    })
+
     // const trainersResource = this.$resource('http://localhost:3003/solve{/text}')
     //
     // trainersResource.get().then(response => {

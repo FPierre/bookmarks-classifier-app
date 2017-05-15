@@ -8,6 +8,8 @@ const javaScriptTrainer = require('./trainers/javascript-trainer')
 const linuxTrainer = require('./trainers/linux-trainer')
 const performanceTrainer = require('./trainers/performance-trainer')
 
+const pendingTexts = require('./extractor/tagged-bookmarks.json')
+
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -18,11 +20,18 @@ const trainers = [
   ...linuxTrainer,
   ...performanceTrainer
 ]
-const sanitizedTrainers = sanitizeTexts(trainers)
+// const sanitizedTrainers = sanitizeTexts(trainers)
 
-for (const trainer of sanitizedTrainers) {
-  bayes.train(trainer.text, trainer.tag)
-}
+// for (const trainer of sanitizedTrainers) {
+//   bayes.train(trainer.text, trainer.tag)
+// }
+
+app.get('/pending', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.json({ texts: pendingTexts })
+})
 
 app.post('/guess', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')

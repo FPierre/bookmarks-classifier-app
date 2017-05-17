@@ -4,7 +4,7 @@
     h1 Bookmarks classifier
     h2 Naive Bayes classifier feeded by bookmarked articles
 
-    nav.tabs
+    nav.tabs(:class='{ "fixed": scrollY >= 150 }')
       button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
       button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
       button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
@@ -38,7 +38,8 @@ export default {
       currentTab: 'guessTab',
       pendingTexts: {},
       text: 'Javascript est un bon langage',
-      scores: {}
+      scores: {},
+      scrollY: null
     }
   },
   computed: {
@@ -65,6 +66,8 @@ export default {
     }
   },
   created () {
+    window.addEventListener('scroll', this.handleScroll)
+
     this.$http.get('http://localhost:3003/pending').then(response => {
       this.pendingTexts = response.body.texts
     }, response => {
@@ -78,6 +81,9 @@ export default {
     //   this.train()
     // })
   },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   methods: {
     guess () {
       this.$http.post('http://localhost:3003/guess', { text: this.text }).then(response => {
@@ -85,6 +91,18 @@ export default {
       }, response => {
         console.log(response.status)
       })
+    },
+    handleScroll () {
+      this.scrollY = window.scrollY
+    }
+  },
+  watch: {
+    scrollY: (newVal) => {
+      if (newVal >= 80) {
+        console.log('ok')
+      } else {
+        console.log('ko')
+      }
     }
   },
   components: {
@@ -160,16 +178,25 @@ button {
 }
 
 .tabs {
-  margin: 4em 0;
+  background-color: #fff;
+  padding: 4em 0 0;
   text-align: center;
+}
+
+.tabs.fixed {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .3);
 }
 
 .tab {
   background: none;
   border: none;
   border-bottom: 3px solid transparent;
-  margin: .5em 1em;
-  padding: 0 0 .3em;
+  margin: 0 1em;
+  padding: 0 0 .5em;
 }
 
 .tab.active {
@@ -195,10 +222,6 @@ button {
 .pending-text:last-child {
   border-bottom: 1px solid #e4e4e4;
 }
-
-/*.pending-text:hover {
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .3);
-}*/
 
 .pending-text-title {
   display: block;

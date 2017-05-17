@@ -2,9 +2,9 @@
 #app
   .container
     h1 Bookmarks classifier
-    h2 Naive Bayes classifier
+    h2 Naive Bayes classifier feeded by bookmarked articles
 
-    nav.nav
+    nav.tabs
       button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
       button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
       button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
@@ -19,7 +19,7 @@
         label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
 
       template(v-else-if='isPendingTab')
-        .pending-texts
+        .container
           .pending-text(v-for='text in pendingTexts')
             span.pending-text-title {{ text.text }}
             span.pending-text-tag {{ text.tag }}
@@ -106,7 +106,6 @@ body {
 }
 
 #app {
-  text-align: center;
 }
 
 .container {
@@ -121,6 +120,11 @@ body {
 h1 {
   font-size: 3.2em;
   font-weight: 300;
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
 }
 
 input[type=text] {
@@ -155,8 +159,9 @@ button {
   padding: 0.75em 2em;
 }
 
-.nav {
-  margin: 4em 0 0;
+.tabs {
+  margin: 4em 0;
+  text-align: center;
 }
 
 .tab {
@@ -173,22 +178,27 @@ button {
 
 .tab-content {
   background-color: #eee;
-  padding: 2rem 0;
+  padding: 4rem 0;
 }
 
 #bar-chart {
   height: 200px;
 }
 
-.pending-texts {
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-}
-
 .pending-text {
   background-color: #fff;
-  border-top: 1px solid #e4e4e4;
-  padding: 1.4rem 0;
+  border: 1px solid #e4e4e4;
+  border-bottom: none;
+  padding: 1.2rem;
 }
+
+.pending-text:last-child {
+  border-bottom: 1px solid #e4e4e4;
+}
+
+/*.pending-text:hover {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .3);
+}*/
 
 .pending-text-title {
   display: block;

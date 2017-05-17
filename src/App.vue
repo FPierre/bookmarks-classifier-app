@@ -9,20 +9,23 @@
       button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
       button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
 
-    template(v-if='isGuessTab')
-      input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
-      br
-      button.btn(@click='guess') CLASSIFY
+  .container-fluid
+    .tab-content
+      template(v-if='isGuessTab')
+        input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
+        br
+        button.btn(@click='guess') CLASSIFY
 
-      label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
+        label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
 
-    template(v-else-if='isPendingTab')
-      .pending-text(v-for='text in pendingTexts')
-        span.pending-text-title {{ text.text }}
-        span.pending-text-tag {{ text.tag }}
+      template(v-else-if='isPendingTab')
+        .pending-texts
+          .pending-text(v-for='text in pendingTexts')
+            span.pending-text-title {{ text.text }}
+            span.pending-text-tag {{ text.tag }}
 
-    template(v-else-if='isSupervisionTab')
-      | supervisionTab
+      template(v-else-if='isSupervisionTab')
+        | supervisionTab
 </template>
 
 <script>
@@ -93,17 +96,16 @@ export default {
 <style>
 body {
   /*color: #35495e;*/
-  background-color: #eee;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background-color: #fff;
   color: #2c3e50;
   font-size: 14px;
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  margin: 0;
 }
 
 #app {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  margin-top: 4em;
   text-align: center;
 }
 
@@ -119,7 +121,6 @@ body {
 h1 {
   font-size: 3.2em;
   font-weight: 300;
-  margin: 0;
 }
 
 input[type=text] {
@@ -155,7 +156,7 @@ button {
 }
 
 .nav {
-  margin: 5em 0;
+  margin: 4em 0 0;
 }
 
 .tab {
@@ -170,16 +171,23 @@ button {
   border-bottom-color: #4fc08d;
 }
 
+.tab-content {
+  background-color: #eee;
+  padding: 2rem 0;
+}
+
 #bar-chart {
   height: 200px;
 }
 
+.pending-texts {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
 .pending-text {
   background-color: #fff;
-  border-radius: .2rem;
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  border-top: 1px solid #e4e4e4;
   padding: 1.4rem 0;
-  margin: .3rem 0;
 }
 
 .pending-text-title {

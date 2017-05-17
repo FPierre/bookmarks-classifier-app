@@ -1,13 +1,14 @@
 <template lang='pug'>
 #app
-  .container
-    h1 Bookmarks classifier
-    h2 Naive Bayes classifier feeded by bookmarked articles
+  header.header
+    .container
+      h1 Bookmarks classifier
+      h2 Naive Bayes classifier feeded by bookmarked articles
 
-    nav.tabs(:class='{ "fixed": scrollY >= 150 }')
-      button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
-      button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
-      button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
+      nav.tabs(:class='{ "fixed": scrollY >= 150 }')
+        button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
+        button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
+        button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
 
   .container-fluid
     .tab-content
@@ -35,7 +36,7 @@ export default {
   name: 'app',
   data () {
     return {
-      currentTab: 'guessTab',
+      currentTab: 'pendingTab',
       pendingTexts: {},
       text: 'Javascript est un bon langage',
       scores: {},
@@ -116,7 +117,7 @@ body {
   /*color: #35495e;*/
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background-color: #fff;
+  background-color: #eee;
   color: #2c3e50;
   font-size: 14px;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -168,6 +169,11 @@ button {
   transition: all 0.15s ease;
 }
 
+.header {
+  background-color: #fff;
+  padding-top: .1rem;
+}
+
 .btn {
   background-color: #4fc08d;
   border-radius: 2em;
@@ -194,9 +200,9 @@ button {
 .tab {
   background: none;
   border: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 4px solid transparent;
   margin: 0 1em;
-  padding: 0 0 .5em;
+  padding: 0 0 .6em;
 }
 
 .tab.active {

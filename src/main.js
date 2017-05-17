@@ -3,8 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import VueResource from 'vue-resource'
+import VueTouch from 'vue-touch'
 
-Vue.use(VueResource)
+Vue.use(VueResource).use(VueTouch)
 
 Vue.config.productionTip = false
 

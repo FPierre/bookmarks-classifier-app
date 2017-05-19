@@ -5,6 +5,7 @@
       h1 Bookmarks classifier
       h2 Naive Bayes classifier feeded by bookmarked articles
 
+    .container-fluid
       nav.tabs(:class='{ "fixed": scrollY >= 150 }')
         button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
         button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
@@ -13,20 +14,23 @@
   .container-fluid
     .tab-content
       template(v-if='isGuessTab')
-        input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
-        br
-        button.btn(@click='guess') CLASSIFY
+        .container
+          input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
+          br
+          button.btn(@click='guess') CLASSIFY
 
-        label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
+          label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
 
       template(v-else-if='isPendingTab')
         .container
-          .pending-text(v-for='text in pendingTexts')
-            span.pending-text-title {{ text.text }}
-            span.pending-text-tag {{ text.tag }}
+          v-touch(@panleft='refuteClassification', @panstart='startRefuteClassification', @panend='endRefuteClassification')
+            .pending-text(v-for='text in pendingTexts')
+              span.pending-text-title {{ text.text }}
+              span.pending-text-tag {{ text.tag }}
 
       template(v-else-if='isSupervisionTab')
-        | supervisionTab
+        .container
+          | supervisionTab
 </template>
 
 <script>
@@ -95,14 +99,36 @@ export default {
     },
     handleScroll () {
       this.scrollY = window.scrollY
-    }
-  },
-  watch: {
-    scrollY: (newVal) => {
-      if (newVal >= 80) {
-        console.log('ok')
-      } else {
-        console.log('ko')
+    },
+    startRefuteClassification (e) {
+      // console.log('startRefuteClassification')
+      //
+      // const box = document.querySelector(e.target.localName).closest('.pending-text')
+      //
+      // // Sometime it's null
+      // if (box) {
+      //   console.log('box')
+      //   this.originalMarginRight = 0
+      // }
+    },
+    refuteClassification (e) {
+      // console.log('refuteClassification')
+      // console.log(e)
+
+      const box = document.querySelector(e.target.localName).closest('.pending-text')
+
+      // Sometime it's null
+      if (box) {
+        box.style.marginRight = `${e.distance}px`
+      }
+    },
+    endRefuteClassification (e) {
+      console.log('endRefuteClassification')
+
+      const box = document.querySelector(e.target.localName).closest('.pending-text')
+
+      if (box) {
+        box.style.marginRight = '0px'
       }
     }
   },
@@ -184,16 +210,21 @@ button {
 }
 
 .tabs {
+  -moz-transition: all .15s ease-in;
+  -ms-transition: all .15s ease-in;
+  -o-transition: all .15s ease-in;
+  -webkit-transition: all .15s ease-in;
   background-color: #fff;
   padding: 4em 0 0;
   text-align: center;
+  transition: all .15s ease-in;
+  width: 100%;
 }
 
 .tabs.fixed {
   position: fixed;
   left: 0;
   top: 0;
-  width: 100%;
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .3);
 }
 

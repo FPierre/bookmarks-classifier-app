@@ -23,10 +23,7 @@
 
       template(v-else-if='isPendingTab')
         .container
-          v-touch(@panleft='refuteClassification', @panstart='startRefuteClassification', @panend='endRefuteClassification')
-            .pending-text(v-for='text in pendingTexts')
-              span.pending-text-title {{ text.text }}
-              span.pending-text-tag {{ text.tag }}
+          pending-text(v-for='text in pendingTexts', :data='text', :key='text')
 
       template(v-else-if='isSupervisionTab')
         .container
@@ -34,6 +31,7 @@
 </template>
 
 <script>
+import PendingText from './components/PendingText'
 import LabelProbabilityBar from './components/LabelProbabilityBar'
 
 export default {
@@ -99,40 +97,10 @@ export default {
     },
     handleScroll () {
       this.scrollY = window.scrollY
-    },
-    startRefuteClassification (e) {
-      // console.log('startRefuteClassification')
-      //
-      // const box = document.querySelector(e.target.localName).closest('.pending-text')
-      //
-      // // Sometime it's null
-      // if (box) {
-      //   console.log('box')
-      //   this.originalMarginRight = 0
-      // }
-    },
-    refuteClassification (e) {
-      // console.log('refuteClassification')
-      // console.log(e)
-
-      const box = document.querySelector(e.target.localName).closest('.pending-text')
-
-      // Sometime it's null
-      if (box) {
-        box.style.marginRight = `${e.distance}px`
-      }
-    },
-    endRefuteClassification (e) {
-      console.log('endRefuteClassification')
-
-      const box = document.querySelector(e.target.localName).closest('.pending-text')
-
-      if (box) {
-        box.style.marginRight = '0px'
-      }
     }
   },
   components: {
+    PendingText,
     LabelProbabilityBar
   }
 }
@@ -247,25 +215,5 @@ button {
 
 #bar-chart {
   height: 200px;
-}
-
-.pending-text {
-  background-color: #fff;
-  border: 1px solid #e4e4e4;
-  border-bottom: none;
-  padding: 1.2rem;
-}
-
-.pending-text:last-child {
-  border-bottom: 1px solid #e4e4e4;
-}
-
-.pending-text-title {
-  display: block;
-  font-weight: bold;
-}
-
-.pending-text-tag {
-  display: block;
 }
 </style>

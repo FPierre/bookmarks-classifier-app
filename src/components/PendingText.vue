@@ -6,7 +6,7 @@
   .refuse
     | Refuse
 
-  v-touch(@panleft='refuse', @panright='accept', @panend='panEnd')
+  v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
     .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
@@ -35,9 +35,10 @@ export default {
 
       this.resetMarginLeft()
 
-      if (e.distance < this.panLimit) {
+      if (e.distance <= this.panLimit) {
         this.marginRight = `${e.distance}px`
       } else {
+        this.marginRight = `${this.panLimit}px`
         console.log('>= this.panLimit')
       }
     },
@@ -48,9 +49,10 @@ export default {
 
       this.resetMarginRight()
 
-      if (e.distance < this.panLimit) {
+      if (e.distance <= this.panLimit) {
         this.marginLeft = `${e.distance}px`
       } else {
+        this.marginLeft = `${this.panLimit}px`
         console.log('>= this.panLimit')
       }
     },
@@ -72,26 +74,22 @@ export default {
 
 .accept {
   background-color: #4fc08d;
+  color: #fff;
   height: 100%;
   left: 0;
   position: absolute;
-  padding-left: 2.5rem;
   width: 200px;
   z-index: -1;
-  font-size: 1.2rem;
-  color: #fff;
 }
 
 .refuse {
-  background-color: red;
+  background-color: #ff6666;
+  color: #fff;
   height: 100%;
   position: absolute;
   right: 0;
-  padding-right: 2.5rem;
   width: 200px;
   z-index: -1;
-  font-size: 1.2rem;
-  color: #fff;
 }
 
 .pending-text-component:last-child {

@@ -1,6 +1,10 @@
 <template lang='pug'>
 .pending-text-component
-  v-touch(@panleft='refuteClassification', @panend='endRefuteClassification')
+  .accept
+  .refuse
+    | Refuse
+
+  v-touch(@panleft='refuseClassification', @panend='endRefuseClassification')
     .pending-text(:style='{ marginRight: marginRight }')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
@@ -26,8 +30,8 @@ export default {
       //   this.originalMarginRight = 0
       // }
     },
-    refuteClassification (e) {
-      // console.log('refuteClassification')
+    refuseClassification (e) {
+      // console.log('refuseClassification')
       // console.log(e)
 
       const box = document.querySelector(e.target.localName).closest('.pending-text')
@@ -39,8 +43,8 @@ export default {
         // box.style.marginRight = `${e.distance}px`
       }
     },
-    endRefuteClassification (e) {
-      console.log('endRefuteClassification')
+    endRefuseClassification (e) {
+      console.log('endRefuseClassification')
 
       const box = document.querySelector(e.target.localName).closest('.pending-text')
 
@@ -55,13 +59,32 @@ export default {
 
 <style scoped>
 .pending-text-component {
+  position: relative;
+  z-index: 1;
+}
+
+.accept {
+  background-color: #4fc08d;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  width: 40%;
+  z-index: -1;
+}
+
+.refuse {
   background-color: red;
-  border: 1px solid #e4e4e4;
-  border-bottom: none;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  width: 40%;
+  z-index: -1;
 }
 
 .pending-text {
   background-color: #fff;
+  border: 1px solid #e4e4e4;
+  border-bottom: none;
   padding: 1.2rem;
 }
 

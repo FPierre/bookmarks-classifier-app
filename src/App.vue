@@ -178,10 +178,6 @@ button {
 }
 
 .tabs {
-  -moz-transition: all .15s ease-in;
-  -ms-transition: all .15s ease-in;
-  -o-transition: all .15s ease-in;
-  -webkit-transition: all .15s ease-in;
   background-color: #fff;
   padding: 4em 0 0;
   text-align: center;
@@ -190,10 +186,11 @@ button {
 }
 
 .tabs.fixed {
-  position: fixed;
-  left: 0;
-  top: 0;
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .3);
+  left: 0;
+  position: fixed;
+  top: 0;
+  z-index: 2;
 }
 
 .tab {

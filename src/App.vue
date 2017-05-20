@@ -181,7 +181,7 @@ button {
   background-color: #fff;
   padding: 4em 0 0;
   text-align: center;
-  transition: all .3s ease;
+  transition: all .3s ease-in;
   width: 100%;
 }
 

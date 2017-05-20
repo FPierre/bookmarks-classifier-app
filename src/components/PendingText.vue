@@ -1,13 +1,14 @@
 <template lang='pug'>
-.pending-text-component
+.pending-text-component(:class='{ "to-accept": toAccept, "to-refuse": toRefuse }')
   .accept
     | Accept
 
   .refuse
     | Refuse
 
-  v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
-    .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }')
+  v-touch(@panleft='refuse', @panright='accept', @pandown='panDown', @panend='panEnd', @pancancel='panEnd')
+    //- .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }', @hover='hover', @mouseover='hover', @onmousedown='hover', @onmousemove='hover')
+    .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
 </template>
@@ -20,7 +21,9 @@ export default {
       marginRight: '0px',
       marginLeft: '0px',
       panLimit: 200,
-      panDirection: null
+      panDirection: null,
+      toAccept: false,
+      toRefuse: false
     }
   },
   methods: {
@@ -67,12 +70,38 @@ export default {
 
       this.panDirection = 'left'
     },
+    panDown (e) {
+      // console.log('panDown')
+
+      // const box = document.querySelector(e.target).closest('.pending-text')
+      // const box = document.querySelector(e.target.localName).closest('.pending-text')
+      // console.log(box)
+
+      // // Refuse
+      // if (this.panDirection === 'right') {
+      //   console.log('refuse')
+      // // Accept
+      // } else if (this.panDirection === 'left') {
+      //   console.log('accept')
+      // }
+    },
     panEnd (e) {
       // console.log('panEnd')
 
       this.resetMarginRight()
       this.resetMarginLeft()
       this.panDirection = null
+    },
+    hover () {
+      // console.log('hover')
+
+      // Refuse
+      if (this.panDirection === 'right') {
+        this.toRefuse = true
+      // Accept
+      } else if (this.panDirection === 'left') {
+        this.toAccept = true
+      }
     }
   }
 }
@@ -82,6 +111,14 @@ export default {
 .pending-text-component {
   position: relative;
   z-index: 1;
+}
+
+.pending-text-component.toAccept {
+  background-color: green;
+}
+
+.pending-text-component.toRefuse {
+  background-color: red;
 }
 
 .accept {

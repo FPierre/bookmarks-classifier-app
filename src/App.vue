@@ -7,7 +7,7 @@
 
     .container-fluid
       nav.tabs(:class='{ "fixed": scrollY >= 150 }')
-        button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts
+        button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts ({{ pendingTexts.length }})
         button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
         button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
 

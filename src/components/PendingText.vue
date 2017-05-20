@@ -19,7 +19,8 @@ export default {
     return {
       marginRight: '0px',
       marginLeft: '0px',
-      panLimit: 200
+      panLimit: 200,
+      panDirection: null
     }
   },
   methods: {
@@ -31,7 +32,10 @@ export default {
     },
     refuse (e) {
       // console.log('refuse')
-      // console.log(e)
+
+      if (this.panDirection === 'left') {
+        return
+      }
 
       this.resetMarginLeft()
 
@@ -41,11 +45,16 @@ export default {
         this.marginRight = `${this.panLimit}px`
         console.log('>= this.panLimit')
       }
+
+      this.panDirection = 'right'
     },
     accept (e) {
       // console.log('accept')
-      // console.log(e)
       // const box = document.querySelector(e.target.localName).closest('.pending-text')
+
+      if (this.panDirection === 'right') {
+        return
+      }
 
       this.resetMarginRight()
 
@@ -55,12 +64,15 @@ export default {
         this.marginLeft = `${this.panLimit}px`
         console.log('>= this.panLimit')
       }
+
+      this.panDirection = 'left'
     },
     panEnd (e) {
-      console.log('panEnd')
+      // console.log('panEnd')
 
       this.resetMarginRight()
       this.resetMarginLeft()
+      this.panDirection = null
     }
   }
 }

@@ -1,11 +1,13 @@
 <template lang='pug'>
 .pending-text-component
   .accept
+    | Accept
+
   .refuse
     | Refuse
 
-  v-touch(@panleft='refuseClassification', @panend='endRefuseClassification')
-    .pending-text(:style='{ marginRight: marginRight }')
+  v-touch(@panleft='refuse', @panright='accept', @panend='panEnd')
+    .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
 </template>
@@ -15,43 +17,48 @@ export default {
   props: ['data'],
   data () {
     return {
-      marginRight: '0px'
+      marginRight: '0px',
+      marginLeft: '0px',
+      panLimit: 200
     }
   },
   methods: {
-    startRefuteClassification (e) {
-      // console.log('startRefuteClassification')
-      //
-      // const box = document.querySelector(e.target.localName).closest('.pending-text')
-      //
-      // // Sometime it's null
-      // if (box) {
-      //   console.log('box')
-      //   this.originalMarginRight = 0
-      // }
+    resetMarginLeft () {
+      this.marginLeft = '0px'
     },
-    refuseClassification (e) {
-      // console.log('refuseClassification')
+    resetMarginRight () {
+      this.marginRight = '0px'
+    },
+    refuse (e) {
+      // console.log('refuse')
       // console.log(e)
 
-      const box = document.querySelector(e.target.localName).closest('.pending-text')
-      // console.log(box)
+      this.resetMarginLeft()
 
-      // Sometime it's null
-      if (box) {
+      if (e.distance < this.panLimit) {
         this.marginRight = `${e.distance}px`
-        // box.style.marginRight = `${e.distance}px`
+      } else {
+        console.log('>= this.panLimit')
       }
     },
-    endRefuseClassification (e) {
-      console.log('endRefuseClassification')
+    accept (e) {
+      // console.log('accept')
+      // console.log(e)
+      // const box = document.querySelector(e.target.localName).closest('.pending-text')
 
-      const box = document.querySelector(e.target.localName).closest('.pending-text')
+      this.resetMarginRight()
 
-      if (box) {
-        // box.style.marginRight = '0px'
-        this.marginRight = '0px'
+      if (e.distance < this.panLimit) {
+        this.marginLeft = `${e.distance}px`
+      } else {
+        console.log('>= this.panLimit')
       }
+    },
+    panEnd (e) {
+      console.log('panEnd')
+
+      this.resetMarginRight()
+      this.resetMarginLeft()
     }
   }
 }
@@ -66,10 +73,13 @@ export default {
 .accept {
   background-color: #4fc08d;
   height: 100%;
-  position: absolute;
   left: 0;
-  width: 40%;
+  position: absolute;
+  padding-left: 2.5rem;
+  width: 200px;
   z-index: -1;
+  font-size: 1.2rem;
+  color: #fff;
 }
 
 .refuse {
@@ -77,8 +87,15 @@ export default {
   height: 100%;
   position: absolute;
   right: 0;
-  width: 40%;
+  padding-right: 2.5rem;
+  width: 200px;
   z-index: -1;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.pending-text-component:last-child {
+  border-bottom: 1px solid #e4e4e4;
 }
 
 .pending-text {
@@ -86,10 +103,6 @@ export default {
   border: 1px solid #e4e4e4;
   border-bottom: none;
   padding: 1.2rem;
-}
-
-.pending-text-component:last-child {
-  border-bottom: 1px solid #e4e4e4;
 }
 
 .pending-text-title {

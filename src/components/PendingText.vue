@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: ['data'],
   data () {
@@ -21,10 +23,14 @@ export default {
       marginRight: '0px',
       marginLeft: '0px',
       panLimit: 200,
-      panDirection: null,
       toAccept: false,
       toRefuse: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'panDirection'
+    ])
   },
   methods: {
     resetMarginLeft () {
@@ -46,10 +52,9 @@ export default {
         this.marginRight = `${e.distance}px`
       } else {
         this.marginRight = `${this.panLimit}px`
-        console.log('>= this.panLimit')
       }
 
-      this.panDirection = 'right'
+      this.$store.dispatch('changePanDirection', 'right')
     },
     accept (e) {
       // console.log('accept')
@@ -65,10 +70,9 @@ export default {
         this.marginLeft = `${e.distance}px`
       } else {
         this.marginLeft = `${this.panLimit}px`
-        console.log('>= this.panLimit')
       }
 
-      this.panDirection = 'left'
+      this.$store.dispatch('changePanDirection', 'left')
     },
     panDown (e) {
       // console.log('panDown')
@@ -90,7 +94,7 @@ export default {
 
       this.resetMarginRight()
       this.resetMarginLeft()
-      this.panDirection = null
+      this.$store.dispatch('changePanDirection', null)
     },
     hover () {
       // console.log('hover')

@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import * as actions from './actions'
 import * as getters from './getters'
 import pendingTexts from './modules/pending-texts'
-// import products from './modules/products'
 
 Vue.use(Vuex)
 
@@ -14,7 +13,6 @@ export default new Vuex.Store({
   getters,
   modules: {
     pendingTexts
-  //   products
   },
   strict: debug
 })

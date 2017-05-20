@@ -7,7 +7,7 @@
 
     .container-fluid
       nav.tabs(:class='{ "fixed": scrollY >= 150 }')
-        button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts ({{ pendingTexts.length }})
+        button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts ({{ allPendingTexts.length }})
         button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
         button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
 
@@ -24,7 +24,7 @@
       template(v-else-if='isPendingTab')
         .container
           //- pending-text-list
-          pending-text(v-for='text in pendingTexts', :data='text', :key='text')
+          pending-text(v-for='text in allPendingTexts', :data='text', :key='text')
 
       template(v-else-if='isSupervisionTab')
         .container
@@ -34,7 +34,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import PendingText from './components/PendingText'
-// import PendingTextList from './components/PendingTextList'
 import LabelProbabilityBar from './components/LabelProbabilityBar'
 
 export default {
@@ -42,16 +41,16 @@ export default {
   data () {
     return {
       currentTab: 'pendingTab',
-      // pendingTexts: {},
       text: 'Javascript est un bon langage',
       scores: {},
       scrollY: null
     }
   },
   computed: {
-    ...mapGetters({
-      pendingTexts: 'allPendingTexts'
-    }),
+    ...mapGetters([
+      'allPendingTexts',
+      'panDirection'
+    ]),
     isGuessTab () {
       return this.currentTab === 'guessTab'
     },
@@ -102,7 +101,6 @@ export default {
     }
   },
   components: {
-    // PendingTextList,
     PendingText,
     LabelProbabilityBar
   }

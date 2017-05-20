@@ -23,6 +23,7 @@
 
       template(v-else-if='isPendingTab')
         .container
+          //- pending-text-list
           pending-text(v-for='text in pendingTexts', :data='text', :key='text')
 
       template(v-else-if='isSupervisionTab')
@@ -31,7 +32,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PendingText from './components/PendingText'
+// import PendingTextList from './components/PendingTextList'
 import LabelProbabilityBar from './components/LabelProbabilityBar'
 
 export default {
@@ -39,13 +42,16 @@ export default {
   data () {
     return {
       currentTab: 'pendingTab',
-      pendingTexts: {},
+      // pendingTexts: {},
       text: 'Javascript est un bon langage',
       scores: {},
       scrollY: null
     }
   },
   computed: {
+    ...mapGetters({
+      pendingTexts: 'allPendingTexts'
+    }),
     isGuessTab () {
       return this.currentTab === 'guessTab'
     },
@@ -71,11 +77,7 @@ export default {
   created () {
     window.addEventListener('scroll', this.handleScroll)
 
-    this.$http.get('http://localhost:3003/pending').then(response => {
-      this.pendingTexts = response.body.texts
-    }, response => {
-      // error callback
-    })
+    this.$store.dispatch('getAllPendingTexts')
 
     // const trainersResource = this.$resource('http://localhost:3003/solve{/text}')
     //
@@ -100,6 +102,7 @@ export default {
     }
   },
   components: {
+    // PendingTextList,
     PendingText,
     LabelProbabilityBar
   }

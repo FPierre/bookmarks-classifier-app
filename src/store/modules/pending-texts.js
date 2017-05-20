@@ -1,39 +1,35 @@
-// import shop from '../../api/shop'
-// import * as types from '../mutation-types'
-//
-// // initial state
-// const state = {
-//   all: []
-// }
-//
-// // getters
-// const getters = {
-//   allProducts: state => state.all
-// }
-//
-// // actions
-// const actions = {
-//   getAllProducts ({ commit }) {
-//     shop.getProducts(products => {
-//       commit(types.RECEIVE_PRODUCTS, { products })
-//     })
-//   }
-// }
-//
-// // mutations
-// const mutations = {
-//   [types.RECEIVE_PRODUCTS] (state, { products }) {
-//     state.all = products
-//   },
-//
+import pendingTexts from '../../api/pending-texts'
+import * as types from '../mutation-types'
+
+const state = {
+  all: []
+}
+
+const getters = {
+  allPendingTexts: state => state.all
+}
+
+const actions = {
+  getAllPendingTexts ({ commit }) {
+    pendingTexts.getPendingTexts(pendingTexts => {
+      commit(types.RECEIVE_PENDING_TEXTS, { pendingTexts })
+    })
+  }
+}
+
+const mutations = {
+  [types.RECEIVE_PENDING_TEXTS] (state, { pendingTexts }) {
+    state.all = pendingTexts
+  }
+
 //   [types.ADD_TO_CART] (state, { id }) {
 //     state.all.find(p => p.id === id).inventory--
 //   }
-// }
-//
-// export default {
-//   state,
-//   getters,
-//   actions,
-//   mutations
-// }
+}
+
+export default {
+  state,
+  getters,
+  actions,
+  mutations
+}

@@ -1,15 +1,14 @@
 <template lang='pug'>
 #app
   header.header
+    nav.tabs(:class='{ "fixed": scrollY >= 135 }')
+      button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts ({{ allPendingTexts.length }})
+      button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
+      button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
+
     .container
       h1 Bookmarks classifier
       h2 Naive Bayes classifier feeded by bookmarked articles
-
-    .container-fluid
-      nav.tabs(:class='{ "fixed": scrollY >= 150 }')
-        button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts ({{ allPendingTexts.length }})
-        button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
-        button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
 
   .container-fluid
     .tab-content
@@ -137,16 +136,6 @@ body {
   width: 100%;
 }
 
-h1 {
-  font-size: 3.2em;
-  font-weight: 300;
-  text-align: center;
-}
-
-h2 {
-  text-align: center;
-}
-
 input[type=text] {
   border-radius: 25px;
   border: 1px solid #e3e3e3;
@@ -170,11 +159,6 @@ button {
   transition: all 0.15s ease;
 }
 
-.header {
-  background-color: #fff;
-  padding-top: .1rem;
-}
-
 .btn {
   background-color: #4fc08d;
   border-radius: 2em;
@@ -184,17 +168,34 @@ button {
   padding: 0.75em 2em;
 }
 
+.header {
+  background-color: #fff;
+}
+
+h1 {
+  font-size: 3.2em;
+  font-weight: 300;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 2rem 0 .5rem;
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
 .tabs {
   background-color: #fff;
   padding: 4em 0 0;
+  position: absolute;
   text-align: center;
-  transition: all .3s ease-in;
+  top: 9.4em;
   width: 100%;
 }
 
 .tabs.fixed {
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .1), 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .3);
-  left: 0;
   position: fixed;
   top: 0;
   z-index: 2;

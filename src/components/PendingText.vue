@@ -1,25 +1,26 @@
 <template lang='pug'>
-.pending-text-component(:class='{ "to-accept": toAccept, "to-refuse": toRefuse }')
+.pending-text-component
   .accept
     | Accept
 
   .refuse
     | Refuse
 
-  v-touch(@panleft='refuse', @panright='accept', @pandown='panDown', @panend='panEnd', @pancancel='panEnd')
+  v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
     //- .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }', @hover='hover', @mouseover='hover', @onmousedown='hover', @onmousemove='hover')
-    .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
+    .pending-text(:class='{ "to-accept": toAccept, "to-refuse": toRefuse }', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   props: ['data'],
   data () {
     return {
+      id: `${this.data.tag}-${this.data.text}`,
       marginRight: '0px',
       marginLeft: '0px',
       panLimit: 200,
@@ -33,6 +34,10 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'addAcceptedText',
+      'addRefusedText'
+    ]),
     resetMarginLeft () {
       this.marginLeft = '0px'
     },
@@ -74,21 +79,6 @@ export default {
 
       this.$store.dispatch('changePanDirection', 'left')
     },
-    panDown (e) {
-      // console.log('panDown')
-
-      // const box = document.querySelector(e.target).closest('.pending-text')
-      // const box = document.querySelector(e.target.localName).closest('.pending-text')
-      // console.log(box)
-
-      // // Refuse
-      // if (this.panDirection === 'right') {
-      //   console.log('refuse')
-      // // Accept
-      // } else if (this.panDirection === 'left') {
-      //   console.log('accept')
-      // }
-    },
     panEnd (e) {
       // console.log('panEnd')
 
@@ -97,14 +87,18 @@ export default {
       this.$store.dispatch('changePanDirection', null)
     },
     hover () {
-      // console.log('hover')
+      if (this.panDirection === null) {
+        return
+      }
 
-      // Refuse
-      if (this.panDirection === 'right') {
+      console.log('hover')
+
+      if (this.panDirection === 'right' && this.toRefuse !== true) {
         this.toRefuse = true
-      // Accept
-      } else if (this.panDirection === 'left') {
+        this.addRefusedText(this.id)
+      } else if (this.panDirection === 'left' && this.toAccept !== true) {
         this.toAccept = true
+        this.addAcceptedText(this.id)
       }
     }
   }
@@ -117,11 +111,11 @@ export default {
   z-index: 1;
 }
 
-.pending-text-component.toAccept {
+.pending-text.to-accept {
   background-color: green;
 }
 
-.pending-text-component.toRefuse {
+.pending-text.to-refuse {
   background-color: red;
 }
 

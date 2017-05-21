@@ -23,7 +23,11 @@
 
       template(v-else-if='isPendingTab')
         .container
-          //- pending-text-list
+          template(v-if='acceptedTexts')
+            button.btn Accept {{ acceptedTexts.length }} texts
+          template(v-else-if='refusedTexts')
+            button.btn Delete {{ refusedTexts.length }} texts
+
           pending-text(v-for='text in allPendingTexts', :data='text', :key='text')
 
       template(v-else-if='isSupervisionTab')
@@ -49,6 +53,8 @@ export default {
   computed: {
     ...mapGetters([
       'allPendingTexts',
+      'acceptedTexts',
+      'refusedTexts',
       'panDirection'
     ]),
     isGuessTab () {
@@ -209,6 +215,7 @@ button {
 .tab-content {
   background-color: #eee;
   padding: 4rem 0;
+  transition: all .3s ease-in;
 }
 
 #bar-chart {

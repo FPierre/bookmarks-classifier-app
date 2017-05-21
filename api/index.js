@@ -20,6 +20,7 @@ const trainers = [
   ...linuxTrainer,
   ...performanceTrainer
 ]
+
 // const sanitizedTrainers = sanitizeTexts(trainers)
 
 // for (const trainer of sanitizedTrainers) {

@@ -7,8 +7,6 @@
     | Refuse
 
   v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
-    //- .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }', @hover='hover', @mouseover='hover', @onmousedown='hover', @onmousemove='hover')
-    //- .pending-text(:class='{ "to-accept": status === "accepted", "to-refuse": status === "refused" }', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
     .pending-text(:class='pendingTextClass', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
@@ -111,14 +109,6 @@ export default {
   z-index: 1;
 }
 
-.pending-text.to-accept {
-  background-color: green;
-}
-
-.pending-text.to-refuse {
-  background-color: red;
-}
-
 .accept {
   background-color: #4fc08d;
   color: #fff;
@@ -147,7 +137,17 @@ export default {
   background-color: #fff;
   border: 1px solid #e4e4e4;
   border-bottom: none;
-  padding: 1.2rem;
+  padding: 1.1rem;
+}
+
+.pending-text.to-accept {
+  /*background-color: rgba(79, 191, 141, .2);*/
+  background-color: #4fc08d;
+}
+
+.pending-text.to-refuse {
+  /*background-color: rgba(255, 102, 102, .2);*/
+  background-color: #ff6666;
 }
 
 .pending-text-title {

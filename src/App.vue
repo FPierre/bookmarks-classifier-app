@@ -222,8 +222,13 @@ h2 {
 }
 
 .actions {
-  background-color: blue;
-  margin-bottom: 1rem;
+  /*background-color: blue;*/
+  /*margin-bottom: 1rem;*/
+  position: absolute;
+  /*width: 100%;*/
+  /*height: 100px;*/
+  /*left: 0;*/
+  margin-top: -4rem;
 }
 
 #bar-chart {

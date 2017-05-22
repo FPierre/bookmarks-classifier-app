@@ -3,14 +3,18 @@ import * as types from '../mutation-types'
 
 const state = {
   all: [],
-  panDirection: null
+  panDirection: null,
+  panLimit: 200
 }
 
 const getters = {
   allPendingTexts: state => state.all,
   acceptedTexts: state => state.all.filter(t => t.status === 'accepted'),
   refusedTexts: state => state.all.filter(t => t.status === 'refused'),
-  panDirection: state => state.panDirection
+  toAcceptTexts: state => state.all.filter(t => t.status === 'toAccept'),
+  toRefuseTexts: state => state.all.filter(t => t.status === 'toRefuse'),
+  panDirection: state => state.panDirection,
+  panLimit: state => state.panLimit
 }
 
 const actions = {
@@ -26,6 +30,14 @@ const actions = {
 
   addRefusedText ({ commit }, id) {
     commit(types.ADD_REFUSED_TEXT, { id })
+  },
+
+  addToAcceptText ({ commit }, id) {
+    commit(types.ADD_TO_ACCEPT_TEXT, { id })
+  },
+
+  addToRefuseText ({ commit }, id) {
+    commit(types.ADD_TO_REFUSE_TEXT, { id })
   },
 
   changePanDirection ({ commit }, direction) {
@@ -46,6 +58,16 @@ const mutations = {
   [types.ADD_REFUSED_TEXT] (state, { id }) {
     const text = state.all.find(t => t.id === id)
     text.status = 'refused'
+  },
+
+  [types.ADD_TO_ACCEPT_TEXT] (state, { id }) {
+    const text = state.all.find(t => t.id === id)
+    text.status = 'toAccept'
+  },
+
+  [types.ADD_TO_REFUSE_TEXT] (state, { id }) {
+    const text = state.all.find(t => t.id === id)
+    text.status = 'toRefuse'
   },
 
   [types.CHANGE_PAN_DIRECTION] (state, { direction }) {

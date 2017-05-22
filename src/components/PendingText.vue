@@ -10,10 +10,15 @@
 
   v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
     .pending-text(:class='pendingTextClass', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
-      span.pending-text-title {{ data.text }}
-      span.pending-text-tag {{ data.tag }}
+      .text-informations
+        span.pending-text-title {{ data.text }}
+        span.pending-text-tag {{ data.tag }}
 
-      icon(name='undo', scale='2', v-if='data.status')
+      icon(name='check', v-if='data.status === "toAccept"')
+      icon(name='trash-o', v-if='data.status === "toRefuse"')
+
+      button.undo(v-if='data.status', @click='undo')
+        icon(name='undo')
 </template>
 
 <script>
@@ -28,25 +33,30 @@ export default {
   data () {
     return {
       marginRight: '0px',
-      marginLeft: '0px',
-      panLimit: 200
+      marginLeft: '0px'
     }
   },
   computed: {
     ...mapGetters([
-      'panDirection'
+      'panDirection',
+      'panLimit'
     ]),
     pendingTextClass () {
       return {
-        'to-accept': this.data.status === 'accepted',
-        'to-refuse': this.data.status === 'refused'
+        'accepted': this.data.status === 'accepted',
+        'refused': this.data.status === 'refused',
+        'to-accept': this.data.status === 'toAccept',
+        'to-refuse': this.data.status === 'toRefuse'
       }
     }
   },
   methods: {
     ...mapActions([
+      'changePanDirection',
       'addAcceptedText',
-      'addRefusedText'
+      'addRefusedText',
+      'addToAcceptText',
+      'addToRefuseText'
     ]),
     resetMarginLeft () {
       this.marginLeft = '0px'
@@ -55,9 +65,7 @@ export default {
       this.marginRight = '0px'
     },
     refuse (e) {
-      // console.log('refuse')
-
-      if (this.panDirection === 'left') {
+      if (this.panDirection === 'left' || this.data.status === 'accepted' || this.data.status === 'refused') {
         return
       }
 
@@ -65,17 +73,18 @@ export default {
 
       if (e.distance <= this.panLimit) {
         this.marginRight = `${e.distance}px`
+        this.changePanDirection('right')
       } else {
+        // Sometimes it exceeds the limit
         this.marginRight = `${this.panLimit}px`
+        this.addRefusedText(this.data.id)
+        // Avoids border effect when accepted (padding reduce height of box, may hover other boxes)
+        this.changePanDirection(null)
+        this.resetMarginRight()
       }
-
-      this.$store.dispatch('changePanDirection', 'right')
     },
     accept (e) {
-      // console.log('accept')
-      // const box = document.querySelector(e.target.localName).closest('.pending-text')
-
-      if (this.panDirection === 'right') {
+      if (this.panDirection === 'left' || this.data.status === 'refused' || this.data.status === 'accepted') {
         return
       }
 
@@ -83,29 +92,34 @@ export default {
 
       if (e.distance <= this.panLimit) {
         this.marginLeft = `${e.distance}px`
+        this.changePanDirection('left')
       } else {
+        // Sometimes it exceeds the limit
         this.marginLeft = `${this.panLimit}px`
+        this.addAcceptedText(this.data.id)
+        // Avoids border effect when accepted (padding reduce height of box, may hover other boxes)
+        this.changePanDirection(null)
+        this.resetMarginLeft()
       }
-
-      this.$store.dispatch('changePanDirection', 'left')
     },
     panEnd (e) {
-      // console.log('panEnd')
-
       this.resetMarginRight()
       this.resetMarginLeft()
-      this.$store.dispatch('changePanDirection', null)
+      this.changePanDirection(null)
     },
     hover () {
       if (this.panDirection === null) {
         return
       }
 
-      if (this.panDirection === 'right' && this.data.status !== 'refused') {
-        this.addRefusedText(this.data.id)
-      } else if (this.panDirection === 'left' && this.data.status !== 'accepted') {
-        this.addAcceptedText(this.data.id)
+      if (this.panDirection === 'right' && this.data.status !== 'toRefuse') {
+        this.addToRefuseText(this.data.id)
+      } else if (this.panDirection === 'left' && this.data.status !== 'toAccept') {
+        this.addToAcceptText(this.data.id)
       }
+    },
+    undo () {
+      console.log('undo')
     }
   },
   components: {
@@ -149,16 +163,35 @@ export default {
   border: 1px solid #e4e4e4;
   border-bottom: none;
   padding: 1.1rem;
+  display: flex;
+  transition: padding .5s ease;
+}
+
+.pending-text.accepted {
+  background-color: #4fc08d;
+  color: #fff;
+  padding: .5rem 1.1rem;
+}
+
+.pending-text.refused {
+  background-color: #ff6666;
+  color: #fff;
+  padding: .5rem 1.1rem;
+}
+
+.pending-text.accepted .pending-text-tag,
+.pending-text.refused .pending-text-tag {
+  display: none;
 }
 
 .pending-text.to-accept {
-  /*background-color: rgba(79, 191, 141, .2);*/
-  background-color: #4fc08d;
 }
 
 .pending-text.to-refuse {
-  /*background-color: rgba(255, 102, 102, .2);*/
-  background-color: #ff6666;
+}
+
+.text-informations {
+  flex-grow: 1;
 }
 
 .pending-text-title {
@@ -168,5 +201,11 @@ export default {
 
 .pending-text-tag {
   display: block;
+}
+
+.undo {
+  background: none;
+  border: none;
+  color: inherit;
 }
 </style>

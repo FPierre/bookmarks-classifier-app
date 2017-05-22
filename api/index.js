@@ -8,7 +8,7 @@ const javaScriptTrainer = require('./trainers/javascript-trainer')
 const linuxTrainer = require('./trainers/linux-trainer')
 const performanceTrainer = require('./trainers/performance-trainer')
 
-const pendingTexts = require('./extractor/tagged-bookmarks.json')
+const pendingTexts = require('./extractor/tagged-bookmarks.json').
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))

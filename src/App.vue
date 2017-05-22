@@ -22,10 +22,12 @@
 
       template(v-else-if='isPendingTab')
         .container
-          template(v-if='acceptedTexts')
-            button.btn Accept {{ acceptedTexts.length }} texts
-          template(v-else-if='refusedTexts')
-            button.btn Delete {{ refusedTexts.length }} texts
+          template(v-if='acceptedTexts.length > 0')
+            .actions
+              button.btn Accept {{ acceptedTexts.length }} texts
+          template(v-else-if='refusedTexts.length > 0')
+            .actions
+              button.btn Delete {{ refusedTexts.length }} texts
 
           pending-text(v-for='text in allPendingTexts', :data='text', :key='text')
 
@@ -215,8 +217,13 @@ h2 {
 
 .tab-content {
   background-color: #eee;
-  padding: 4rem 0;
+  padding: 9rem 0 4rem;
   transition: all .3s ease-in;
+}
+
+.actions {
+  background-color: blue;
+  margin-bottom: 1rem;
 }
 
 #bar-chart {

@@ -8,7 +8,8 @@
 
   v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
     //- .pending-text(:style='{ marginRight: marginRight, marginLeft: marginLeft }', @hover='hover', @mouseover='hover', @onmousedown='hover', @onmousemove='hover')
-    .pending-text(:class='{ "to-accept": toAccept, "to-refuse": toRefuse }', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
+    //- .pending-text(:class='{ "to-accept": status === "accepted", "to-refuse": status === "refused" }', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
+    .pending-text(:class='pendingTextClass', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
 </template>
@@ -20,18 +21,21 @@ export default {
   props: ['data'],
   data () {
     return {
-      id: `${this.data.tag}-${this.data.text}`,
       marginRight: '0px',
       marginLeft: '0px',
-      panLimit: 200,
-      toAccept: false,
-      toRefuse: false
+      panLimit: 200
     }
   },
   computed: {
     ...mapGetters([
       'panDirection'
-    ])
+    ]),
+    pendingTextClass () {
+      return {
+        'to-accept': this.data.status === 'accepted',
+        'to-refuse': this.data.status === 'refused'
+      }
+    }
   },
   methods: {
     ...mapActions([
@@ -91,14 +95,10 @@ export default {
         return
       }
 
-      console.log('hover')
-
-      if (this.panDirection === 'right' && this.toRefuse !== true) {
-        this.toRefuse = true
-        this.addRefusedText(this.id)
-      } else if (this.panDirection === 'left' && this.toAccept !== true) {
-        this.toAccept = true
-        this.addAcceptedText(this.id)
+      if (this.panDirection === 'right' && this.data.status !== 'refused') {
+        this.addRefusedText(this.data.id)
+      } else if (this.panDirection === 'left' && this.data.status !== 'accepted') {
+        this.addAcceptedText(this.data.id)
       }
     }
   }

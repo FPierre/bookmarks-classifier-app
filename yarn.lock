@@ -4817,6 +4817,10 @@ void-elements@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
+vue-awesome@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/vue-awesome/-/vue-awesome-2.3.1.tgz#edd8f54a62af322df81f06ddf25c1ec2ae995b05"
+
 vue-chartjs@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/vue-chartjs/-/vue-chartjs-2.6.2.tgz#f0fe61892494325db8e2462cb0397b948b4434f4"

@@ -2,18 +2,26 @@
 .pending-text-component
   .accept
     | Accept
+    icon(name='check', scale='2')
 
   .refuse
     | Refuse
+    icon(name='trash-o', scale='2')
 
   v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
     .pending-text(:class='pendingTextClass', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
       span.pending-text-title {{ data.text }}
       span.pending-text-tag {{ data.tag }}
+
+      icon(name='undo', scale='2', v-if='data.status')
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/trash-o'
+import 'vue-awesome/icons/undo'
+import Icon from 'vue-awesome/components/Icon'
 
 export default {
   props: ['data'],
@@ -99,6 +107,9 @@ export default {
         this.addAcceptedText(this.data.id)
       }
     }
+  },
+  components: {
+    Icon
   }
 }
 </script>

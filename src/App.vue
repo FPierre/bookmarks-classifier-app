@@ -114,28 +114,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss'>
+@import '~bulma/sass/utilities/_all';
+@import '~bulma/sass/grid/columns';
+
 body {
-  /*color: #35495e;*/
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
   background-color: #eee;
   color: #2c3e50;
   font-size: 14px;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   margin: 0;
-}
-
-#app {
-}
-
-.container {
-  margin: 0 auto;
-  width: 60%;
-}
-
-.container-fluid {
-  width: 100%;
 }
 
 input[type=text] {

@@ -11,16 +11,16 @@
     </div>
 
     <v-touch @panleft='refuse' @panright='accept' @panend='panEnd' @pancancel='panEnd'>
-      <div class='pending-text' :class='pendingTextClass' :style='{ marginRight: marginRight, marginLeft: marginLeft }' @mouseover='hover'>
+      <div class='pending-text' :class='statusClasses' :style='{ marginRight, marginLeft }' @mouseover='hover'>
         <div class='text-informations'>
-          <span class='pending-text-title'>{{ data.text }}</span>
-          <span class='pending-text-tag'>{{ data.tag }}</span>
+          <span class='pending-text-title'>{{ pending.text }}</span>
+          <span class='pending-text-tag'>{{ pending.tag }}</span>
         </div>
 
-        <icon name='check' v-if='data.status === "toAccept"'></icon>
-        <icon name='trash-o' v-if='data.status === "toRefuse"'></icon>
+        <icon name='check' v-if='isToAccept'></icon>
+        <icon name='trash-o' v-if='isToRefuse'></icon>
 
-        <button class='undo' v-if='data.status' @click='undo'>
+        <button class='undo' v-if='pending.status' @click='undo'>
           <icon name='undo'></icon>
         </button>
       </div>
@@ -36,7 +36,7 @@ import 'vue-awesome/icons/undo'
 import Icon from 'vue-awesome/components/Icon'
 
 export default {
-  props: ['data'],
+  props: ['pending'],
   data () {
     return {
       marginRight: '0px',
@@ -48,12 +48,24 @@ export default {
       'panDirection',
       'panLimit'
     ]),
-    pendingTextClass () {
+    isAccepted () {
+      return this.pending.status === 'accepted'
+    },
+    isRefused () {
+      return this.pending.status === 'refused'
+    },
+    isToAccept () {
+      return this.pending.status === 'toAccept'
+    },
+    isToRefuse () {
+      return this.pending.status === 'toRefuse'
+    },
+    statusClasses () {
       return {
-        'accepted': this.data.status === 'accepted',
-        'refused': this.data.status === 'refused',
-        'to-accept': this.data.status === 'toAccept',
-        'to-refuse': this.data.status === 'toRefuse'
+        'accepted': this.isAccepted,
+        'refused': this.isRefused,
+        'to-accept': this.isToAccept,
+        'to-refuse': this.isToRefuse
       }
     }
   },
@@ -72,7 +84,7 @@ export default {
       this.marginRight = '0px'
     },
     refuse (e) {
-      if (this.panDirection === 'left' || this.data.status === 'accepted' || this.data.status === 'refused') {
+      if (this.panDirection === 'left' || this.isAccepted || this.isRefused) {
         return
       }
 
@@ -84,14 +96,14 @@ export default {
       } else {
         // Sometimes it exceeds the limit
         this.marginRight = `${this.panLimit}px`
-        this.addRefusedText(this.data.id)
+        this.addRefusedText(this.pending.id)
         // Avoids border effect when accepted (padding reduce height of box, may hover other boxes)
         this.changePanDirection(null)
         this.resetMarginRight()
       }
     },
     accept (e) {
-      if (this.panDirection === 'left' || this.data.status === 'refused' || this.data.status === 'accepted') {
+      if (this.panDirection === 'left' || this.isRefused || this.isAccepted) {
         return
       }
 
@@ -103,7 +115,7 @@ export default {
       } else {
         // Sometimes it exceeds the limit
         this.marginLeft = `${this.panLimit}px`
-        this.addAcceptedText(this.data.id)
+        this.addAcceptedText(this.pending.id)
         // Avoids border effect when accepted (padding reduce height of box, may hover other boxes)
         this.changePanDirection(null)
         this.resetMarginLeft()
@@ -119,10 +131,10 @@ export default {
         return
       }
 
-      if (this.panDirection === 'right' && this.data.status !== 'toRefuse') {
-        this.addToRefuseText(this.data.id)
-      } else if (this.panDirection === 'left' && this.data.status !== 'toAccept') {
-        this.addToAcceptText(this.data.id)
+      if (this.panDirection === 'right' && !this.isToRefuse) {
+        this.addToRefuseText(this.pending.id)
+      } else if (this.panDirection === 'left' && !this.isToAccept) {
+        this.addToAcceptText(this.pending.id)
       }
     },
     undo () {

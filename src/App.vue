@@ -1,45 +1,72 @@
-<template lang='pug'>
-#app
-  header.header
-    nav.tabs(:class='{ "fixed": scrollY >= 135 }')
-      button.tab(@click='currentTab = "pendingTab"', :class='{ "active": isPendingTab }') Pending texts ({{ allPendingTexts.length }})
-      button.tab(@click='currentTab = "guessTab"', :class='{ "active": isGuessTab }') Guess
-      button.tab(@click='currentTab = "supervisionTab"', :class='{ "active": isSupervisionTab }') Supervision
+<template>
+  <div id='app'>
+    <header class='header'>
+      <div>
+        <h1>Bookmarks classifier</h1>
+        <h2>Naive Bayes classifier feeded by IT articles</h2>
+      </div>
 
-    .container
-      h1 Bookmarks classifier
-      h2 Naive Bayes classifier feeded by bookmarked articles
+      <nav class='tab' :class='{ "fixed": scrollY >= 135 }'>
+        <button class='tab' :class='{ "active": isPendingTab }' @click='currentTab = "pendingTab"'>
+          Pending texts ({{ allPendingTexts.length }})
+        </button>
+        <button class='tab' :class='{ "active": isGuessTab }' @click='currentTab = "guessTab"'>
+          Guess
+        </button>
+        <button class='tab' :class='{ "active": isSupervisionTab }' @click='currentTab = "supervisionTab"'>
+          Supervision
+        </button>
+      </nav>
+    </header>
 
-  .container-fluid
-    .tab-content
-      template(v-if='isGuessTab')
-        .container
-          input(type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus)
-          br
-          button.btn(@click='guess') CLASSIFY
+    <div>
+      <div class='tab-content'>
+        <template v-if='isGuessTab'>
+          <div>
+            <input type='text' placeholder='bookmark title' v-model='text' @keyup.enter='guess' autofocus>
+            <br>
+            <button class='btn' @click='guess'>CLASSIFY</button>
 
-          label-probability-bar(:chart-data='test', :height='150', :options="{ legend: { display: false } }")
+            <label-probability-bar :chart-data='test' :height='150' :options="{ legend: { display: false } }"></label-probability-bar>
+          </div>
+        </template>
 
-      template(v-else-if='isPendingTab')
-        .container
-          template(v-if='acceptedTexts.length > 0')
-            .actions
-              button.btn Accept {{ acceptedTexts.length }} texts
-          template(v-else-if='refusedTexts.length > 0')
-            .actions
-              button.btn Delete {{ refusedTexts.length }} texts
+        <template v-else-if='isPendingTab'>
+          <div>
+            <template v-if='acceptedTexts.length > 0'>
+              <div class='actions'>
+                <button class='btn'>
+                  Accept {{ acceptedTexts.length }} texts
+                </button>
+              </div>
+            </template>
 
-          pending-text(v-for='text in allPendingTexts', :data='text', :key='text')
+            <template v-else-if='refusedTexts.length > 0'>
+              <div class='actions'>
+                <button class='btn'>
+                  Delete {{ refusedTexts.length }} texts
+                </button>
+              </div>
+            </template>
 
-      template(v-else-if='isSupervisionTab')
-        .container
-          | supervisionTab
+            <pending-text v-for='text in allPendingTexts' :data='text' :key='text.id'></pending-text>
+          </div>
+        </template>
+
+        <template v-else-if='isSupervisionTab'>
+          <div>
+            supervisionTab
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import PendingText from './components/PendingText'
-import LabelProbabilityBar from './components/LabelProbabilityBar'
+import PendingText from '@/components/PendingText'
+import LabelProbabilityBar from '@/components/LabelProbabilityBar'
 
 export default {
   name: 'app',

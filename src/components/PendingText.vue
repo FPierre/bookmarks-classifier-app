@@ -1,24 +1,31 @@
-<template lang='pug'>
-.pending-text-component
-  .accept
-    | Accept
-    icon(name='check', scale='2')
+<template>
+  <div class='pending-text-component'>
+    <div class='accept'>
+      Accept
+      <icon name='check' scale='2'></icon>
+    </div>
 
-  .refuse
-    | Refuse
-    icon(name='trash-o', scale='2')
+    <div class='refuse'>
+      Refuse
+      <icon name='trash-o' scale='2'></icon>
+    </div>
 
-  v-touch(@panleft='refuse', @panright='accept', @panend='panEnd', @pancancel='panEnd')
-    .pending-text(:class='pendingTextClass', :style='{ marginRight: marginRight, marginLeft: marginLeft }', @mouseover='hover')
-      .text-informations
-        span.pending-text-title {{ data.text }}
-        span.pending-text-tag {{ data.tag }}
+    <v-touch @panleft='refuse' @panright='accept' @panend='panEnd' @pancancel='panEnd'>
+      <div class='pending-text' :class='pendingTextClass' :style='{ marginRight: marginRight, marginLeft: marginLeft }' @mouseover='hover'>
+        <div class='text-informations'>
+          <span class='pending-text-title'>{{ data.text }}</span>
+          <span class='pending-text-tag'>{{ data.tag }}</span>
+        </div>
 
-      icon(name='check', v-if='data.status === "toAccept"')
-      icon(name='trash-o', v-if='data.status === "toRefuse"')
+        <icon name='check' v-if='data.status === "toAccept"'></icon>
+        <icon name='trash-o' v-if='data.status === "toRefuse"'></icon>
 
-      button.undo(v-if='data.status', @click='undo')
-        icon(name='undo')
+        <button class='undo' v-if='data.status' @click='undo'>
+          <icon name='undo'></icon>
+        </button>
+      </div>
+    </v-touch>
+  </div>
 </template>
 
 <script>

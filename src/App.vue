@@ -32,7 +32,7 @@
               </div>
             </template>
 
-            <pending-text v-for='text in allPendingTexts' :data='text' :key='text.id'></pending-text>
+            <pending-text v-for='text in allPendingTexts' :pending='text' :key='text.id'></pending-text>
           </div>
         </template>
 

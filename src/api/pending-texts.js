@@ -12,8 +12,8 @@ export default {
       })
 
       cb(pendingTexts)
-    }, response => {
-      errorCb()
+    }, err => {
+      errorCb(err)
     })
   }
 }

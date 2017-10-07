@@ -1,25 +1,8 @@
 <template>
   <div id='app'>
-    <header class='header'>
-      <div>
-        <h1>Bookmarks classifier</h1>
-        <h2>Naive Bayes classifier feeded by IT articles</h2>
-      </div>
+    <app-nav :pending-texts-count='allPendingTexts.length'></app-nav>
 
-      <nav class='tab' :class='{ "fixed": scrollY >= 135 }'>
-        <button class='tab' :class='{ "active": isPendingTab }' @click='currentTab = "pendingTab"'>
-          Pending texts ({{ allPendingTexts.length }})
-        </button>
-        <button class='tab' :class='{ "active": isGuessTab }' @click='currentTab = "guessTab"'>
-          Guess
-        </button>
-        <button class='tab' :class='{ "active": isSupervisionTab }' @click='currentTab = "supervisionTab"'>
-          Supervision
-        </button>
-      </nav>
-    </header>
-
-    <div>
+    <div class='container'>
       <div class='tab-content'>
         <template v-if='isGuessTab'>
           <div>
@@ -65,6 +48,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import AppNav from '@/components/AppNav'
 import PendingText from '@/components/PendingText'
 import LabelProbabilityBar from '@/components/LabelProbabilityBar'
 
@@ -135,6 +119,7 @@ export default {
     }
   },
   components: {
+    AppNav,
     PendingText,
     LabelProbabilityBar
   }
@@ -142,8 +127,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import '~bulma/sass/utilities/_all';
-@import '~bulma/sass/grid/columns';
+@import '~@/assets/stylesheets/bulma-override';
 
 body {
   background-color: #eee;
@@ -185,54 +169,9 @@ button {
   padding: 0.75em 2em;
 }
 
-.header {
-  background-color: #fff;
-}
-
-h1 {
-  font-size: 3.2em;
-  font-weight: 300;
-  margin-bottom: 0;
-  margin-top: 0;
-  padding: 2rem 0 .5rem;
-  text-align: center;
-}
-
-h2 {
-  text-align: center;
-}
-
-.tabs {
-  background-color: #fff;
-  padding: 4em 0 0;
-  position: absolute;
-  text-align: center;
-  top: 9.4em;
-  width: 100%;
-}
-
-.tabs.fixed {
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .1), 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .3);
-  position: fixed;
-  top: 0;
-  z-index: 2;
-}
-
-.tab {
-  background: none;
-  border: none;
-  border-bottom: 4px solid transparent;
-  margin: 0 1em;
-  padding: 0 0 .6em;
-}
-
-.tab.active {
-  border-bottom-color: #4fc08d;
-}
-
 .tab-content {
   background-color: #eee;
-  padding: 9rem 0 4rem;
+  padding: 4rem 0 4rem;
   transition: all .3s ease-in;
 }
 

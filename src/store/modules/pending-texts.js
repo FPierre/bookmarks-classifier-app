@@ -21,7 +21,7 @@ const actions = {
   getAllPendingTexts ({ commit }) {
     pendingTexts.getPendingTexts(pendingTexts => {
       commit(types.RECEIVE_PENDING_TEXTS, { pendingTexts })
-    })
+    }, err => console.log(err))
   },
 
   addAcceptedText ({ commit }, id) {

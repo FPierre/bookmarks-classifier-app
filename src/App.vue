@@ -110,8 +110,8 @@ export default {
     guess () {
       this.$http.post('http://localhost:3003/guess', { text: this.text }).then(response => {
         this.scores = JSON.parse(response.bodyText)['scores']
-      }, response => {
-        console.log(response.status)
+      }, error => {
+        console.log(error.status)
       })
     },
     handleScroll () {
@@ -171,7 +171,7 @@ button {
 
 .tab-content {
   background-color: #eee;
-  padding: 4rem 0 4rem;
+  padding: 2rem 0 4rem;
   transition: all .3s ease-in;
 }
 

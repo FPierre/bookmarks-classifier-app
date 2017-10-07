@@ -1,6 +1,13 @@
 <template>
-  <nav class='nav'>
-    <nav class='tab' :class='{ "fixed": scrollY >= 135 }'>
+  <div class='tabs is-centered'>
+    <ul>
+      <li class='is-active' @click='currentTab = "pendingTab"'><a>Texts</a></li>
+      <li @click='currentTab = "guessTab"'><a>Guess</a></li>
+      <li @click='currentTab = "supervisionTab"'><a>Supersivion</a></li>
+    </ul>
+  </div>
+
+    <!-- <nav class='tab' :class='{ "fixed": scrollY >= 135 }'>
       <button class='tab' :class='{ "active": isPendingTab }' @click='currentTab = "pendingTab"'>
         Pending texts ({{ pendingTextsCount }})
       </button>
@@ -10,8 +17,7 @@
       <button class='tab' :class='{ "active": isSupervisionTab }' @click='currentTab = "supervisionTab"'>
         Supervision
       </button>
-    </nav>
-  </nav>
+    </nav> -->
 </template>
 
 <script>
@@ -49,35 +55,10 @@ export default {
 </script>
 
 <style scoped>
-.nav {
-  background-color: #fff;
-}
-
-.tabs {
-  background-color: #fff;
-  padding: 4em 0 0;
-  position: absolute;
-  text-align: center;
-  top: 9.4em;
-  width: 100%;
-}
-
-.tabs.fixed {
+/*.tabs.fixed {
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .1), 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .3);
   position: fixed;
   top: 0;
   z-index: 2;
-}
-
-.tab {
-  background: none;
-  border: none;
-  border-bottom: 4px solid transparent;
-  margin: 0 1em;
-  padding: 0 0 .6em;
-}
-
-.tab.active {
-  border-bottom-color: #4fc08d;
-}
+}*/
 </style>

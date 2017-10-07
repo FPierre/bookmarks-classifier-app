@@ -60,6 +60,12 @@ export default {
     isToRefuse () {
       return this.pending.status === 'toRefuse'
     },
+    isLeft () {
+      return this.panDirection === 'left'
+    },
+    isRight () {
+      return this.panDirection === 'right'
+    },
     statusClasses () {
       return {
         'accepted': this.isAccepted,
@@ -84,7 +90,7 @@ export default {
       this.marginRight = '0px'
     },
     refuse (e) {
-      if (this.panDirection === 'left' || this.isAccepted || this.isRefused) {
+      if (this.isLeft || this.isAccepted || this.isRefused) {
         return
       }
 
@@ -103,7 +109,7 @@ export default {
       }
     },
     accept (e) {
-      if (this.panDirection === 'left' || this.isRefused || this.isAccepted) {
+      if (this.isLeft || this.isRefused || this.isAccepted) {
         return
       }
 
@@ -131,9 +137,9 @@ export default {
         return
       }
 
-      if (this.panDirection === 'right' && !this.isToRefuse) {
+      if (this.isRight && !this.isToRefuse) {
         this.addToRefuseText(this.pending.id)
-      } else if (this.panDirection === 'left' && !this.isToAccept) {
+      } else if (this.isLeft && !this.isToAccept) {
         this.addToAcceptText(this.pending.id)
       }
     },

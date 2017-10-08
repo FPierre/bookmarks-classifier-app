@@ -11,7 +11,7 @@
     </div>
 
     <v-touch @panleft='refuse' @panright='accept' @panend='panEnd' @pancancel='panEnd'>
-      <div class='pending-text' :class='statusClasses' :style='{ marginRight, marginLeft }' @mouseover='hover'>
+      <div class='pending-text' :class='statusClasses' :style='{ marginRight, marginLeft }'>
         <div class='text-informations'>
           <span class='pending-text-title'>{{ pending.text }}</span>
           <span class='pending-text-tag'>{{ pending.tag }}</span>
@@ -60,10 +60,10 @@ export default {
     isToRefuse () {
       return this.pending.status === 'toRefuse'
     },
-    isLeft () {
+    isLeftDirection () {
       return this.panDirection === 'left'
     },
-    isRight () {
+    isRightDirection () {
       return this.panDirection === 'right'
     },
     statusClasses () {
@@ -90,7 +90,7 @@ export default {
       this.marginRight = '0px'
     },
     refuse (e) {
-      if (this.isLeft || this.isAccepted || this.isRefused) {
+      if (this.isLeftDirection || this.isAccepted || this.isRefused) {
         return
       }
 
@@ -109,7 +109,7 @@ export default {
       }
     },
     accept (e) {
-      if (this.isLeft || this.isRefused || this.isAccepted) {
+      if (this.isRightDirection || this.isAccepted || this.isRefused) {
         return
       }
 
@@ -131,17 +131,6 @@ export default {
       this.resetMarginRight()
       this.resetMarginLeft()
       this.changePanDirection(null)
-    },
-    hover () {
-      if (this.panDirection === null) {
-        return
-      }
-
-      if (this.isRight && !this.isToRefuse) {
-        this.addToRefuseText(this.pending.id)
-      } else if (this.isLeft && !this.isToAccept) {
-        this.addToAcceptText(this.pending.id)
-      }
     },
     undo () {
       console.log('undo')

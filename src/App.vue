@@ -16,22 +16,6 @@
 
         <template v-else-if='isPendingTab'>
           <div>
-            <template v-if='acceptedTexts.length > 0'>
-              <div class='actions'>
-                <button class='btn'>
-                  Accept {{ acceptedTexts.length }} texts
-                </button>
-              </div>
-            </template>
-
-            <template v-else-if='refusedTexts.length > 0'>
-              <div class='actions'>
-                <button class='btn'>
-                  Delete {{ refusedTexts.length }} texts
-                </button>
-              </div>
-            </template>
-
             <pending-text v-for='text in allPendingTexts' :pending='text' :key='text.id'></pending-text>
           </div>
         </template>
@@ -43,12 +27,15 @@
         </template>
       </div>
     </div>
+
+    <app-pagination></app-pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import AppNav from '@/components/AppNav'
+import AppPagination from '@/components/AppPagination'
 import PendingText from '@/components/PendingText'
 import LabelProbabilityBar from '@/components/LabelProbabilityBar'
 
@@ -58,8 +45,7 @@ export default {
     return {
       currentTab: 'pendingTab',
       text: 'Javascript est un bon langage',
-      scores: {},
-      scrollY: null
+      scores: {}
     }
   },
   computed: {
@@ -94,8 +80,6 @@ export default {
   created () {
     window.addEventListener('scroll', this.handleScroll)
 
-    this.$store.dispatch('getAllPendingTexts')
-
     // const trainersResource = this.$resource('http://localhost:3003/solve{/text}')
     //
     // trainersResource.get().then(response => {
@@ -113,13 +97,11 @@ export default {
       }, error => {
         console.log(error.status)
       })
-    },
-    handleScroll () {
-      this.scrollY = window.scrollY
     }
   },
   components: {
     AppNav,
+    AppPagination,
     PendingText,
     LabelProbabilityBar
   }

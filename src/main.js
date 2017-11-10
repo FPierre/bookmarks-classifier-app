@@ -4,7 +4,7 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueTouch from 'vue-touch'
 import Vuex from 'vuex'
-import App from './App'
+const App = () => import('./App')
 import store from './store'
 
 Vue.use(VueResource).use(VueTouch).use(Vuex)

@@ -34,10 +34,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import AppNav from '@/components/AppNav'
-import AppPagination from '@/components/AppPagination'
-import PendingText from '@/components/PendingText'
-import LabelProbabilityBar from '@/components/LabelProbabilityBar'
+const AppNav = () => import('@/components/AppNav')
+const AppPagination = () => import('@/components/AppPagination')
+const PendingText = () => import('@/components/PendingText')
+const LabelProbabilityBar = () => import('@/components/LabelProbabilityBar')
 
 export default {
   name: 'app',

@@ -33,7 +33,7 @@ import { mapGetters, mapActions } from 'vuex'
 import 'vue-awesome/icons/check'
 import 'vue-awesome/icons/trash-o'
 import 'vue-awesome/icons/undo'
-import Icon from 'vue-awesome/components/Icon'
+const Icon = () => import('vue-awesome/components/Icon')
 
 export default {
   props: ['pending'],

@@ -1,5 +1,5 @@
 <script>
-import { Bar, mixins } from 'vue-chartjs'
+const { Bar, mixins } = () => import('vue-chartjs')
 
 export default Bar.extend({
   mixins: [mixins.reactiveProp],
